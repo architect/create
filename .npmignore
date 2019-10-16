@@ -1,0 +1,7 @@
+.DS_Store
+.eslintignore
+.eslintrc.js
+.git
+.github
+coverage/
+test/
