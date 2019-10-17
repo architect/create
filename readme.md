@@ -1,1 +1,20 @@
-# @architect/create
+[<img src="https://s3-us-west-2.amazonaws.com/arc.codes/architect-logo-500b@2x.png" width=500>](https://www.npmjs.com/package/@architect/create)
+
+## [`@architect/create`](https://www.npmjs.com/package/@architect/create)
+
+> Architect Create: Bootstrap new Architect projects, and idempotently create new project resources
+
+## Create a new Architect project
+
+```
+npm init @architect [--runtime [node, ruby, python]] [project name and/or path]
+```
+
+Example:
+> `npm init @architect` ......... create project named for current dir in current dir
+> `npm init @architect ./` ...... create project named for current dir in current dir
+> `npm init @architect foo` ..... create project named `foo` in current dir
+> `npm init @architect ./foo` ... create `./foo` dir and project named `foo` that dir
+> `npm init @architect ../foo` .. create `../foo` dir and project named `foo` that dir
+> `npm init @architect /foo` .... create `/foo` dir, creates project named `foo` that dir
+> `npm init @architect ../` ..... create project in .. for named for whatever .. is named

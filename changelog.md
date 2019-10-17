@@ -2,7 +2,28 @@
 
 ---
 
-## [Coming soon!]
+## [On master]
+
+### Background
+
+- This repo was seeded by the project initializer in `@architect/utils/init`, with the intention to extend its capabilities
+
+
+### Added
+
+- Standalone project creation via `npm init @architect` (or via CLI by installing this repo globally, which would be kind of a funny thing to do, but hey who knows)
+- Project creation will also install `@architect/architect` into your new project (if necessary and appropriate)
+- Added ability to specify project name and install path, e.g. `create ./foo` creates a dir named `foo` in your current dir, and creates a new Arc project named `foo` in there
+
+
+### Changed
+
+- Updated default function names; resolves #2, thanks @andybee!
+
+
+### Fixed
+
+- Runtime flag now works: `runtime`, `--runtime`, or `-r` + `node`, `js`, `python`, `py`, `ruby`, `rb` initializes with Node, Python, or Ruby
 
 ---
 
