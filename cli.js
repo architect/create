@@ -18,29 +18,32 @@ let update = updater('Create')
 let isRuntime = opt=> opt === 'runtime' || opt === '--runtime' || opt === '-r'
 let isVerbose = opt=> opt === 'verbose' || opt === '--verbose' || opt === '-v'
 
-async function cmd(opts=[], {folder, install}) {
-  let options = {
-    verbose: opts.some(isVerbose),
-    runtime: opts.some(isRuntime) ? opts.slice(opts.findIndex(isRuntime))[1] : false
+async function cmd () {
+  // Print banner
+  banner({version})
+
+  // Used by bootstrap to differentiate between arc create and preflight bootstrap calls
+  let standalone = true
+  let options = process.argv
+
+  // Bootstrap the project on the filesystem, including new dirs, npm i, etc.
+  let {folder, install} = await bootstrap({options, standalone, update})
+
+  // Populate basic project files
+  let opts = {
+    verbose: options.some(isVerbose),
+    runtime: options.some(isRuntime) ? options.slice(options.findIndex(isRuntime))[1] : false
   }
-  return create({options, folder, update, install})
+  return create({options: opts, folder, install, standalone, update})
 }
 
 module.exports = cmd
 
 // allow direct invoke
 if (require.main === module) {
-  (async function() {
+  (async function () {
     try {
-      let options = process.argv
-      let standalone = true
-      // Three steps
-      // 1. Bootstrap the env via bannerprint
-      banner({version})
-      // 2. Bootstrap the project on the filesystem, including new dirs, npm i, etc.
-      let {folder, install} = await bootstrap({options, standalone, update})
-      // 3. Populate basic project files
-      await cmd(options, {folder, install})
+      await cmd()
     }
     catch (err) {
       update.error(err)
