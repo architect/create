@@ -2,7 +2,7 @@ let fs = require('fs')
 let mkdir = require('mkdirp')
 let {join} = require('path')
 let parallel = require('run-parallel')
-let {getLambdaName } = require('@architect/utils')
+let {getLambdaName} = require('@architect/utils')
 
 let getExtension = require('./get-extension')
 let writeArcConfig = require('./write-arc-config')

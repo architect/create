@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 let create = require('.')
+let banner = require('./src/bootstrap/_banner')
 let bootstrap = require('./src/bootstrap')
 let {version} = require('./package.json')
-let {banner, updater} = require('@architect/utils')
+let {updater} = require('@architect/utils')
 let update = updater('Create')
 
 /**
@@ -35,7 +36,7 @@ if (require.main === module) {
       let standalone = true
       // Three steps
       // 1. Bootstrap the env via bannerprint
-      banner({version: `Architect create ${version}`})
+      banner({version})
       // 2. Bootstrap the project on the filesystem, including new dirs, npm i, etc.
       let {folder, install} = await bootstrap({options, standalone, update})
       // 3. Populate basic project files
