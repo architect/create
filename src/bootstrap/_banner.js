@@ -16,7 +16,7 @@ module.exports = function printBanner ({version=''}) {
   }
 
   console.log() // Space
-  log('version', ver)
+  log('Version', ver)
   log('cwd', process.cwd())
   console.log() // Space
 }

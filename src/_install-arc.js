@@ -22,8 +22,8 @@ module.exports = function installArc ({folder, update}, callback) {
   })
   child.on('close', code => {
     if (code === 0) {
-      console.log() // Intentional
-      update.done('Your Architect project is ready!')
+      console.log() // Space
+      update.done('Your Architect project is ready, start the sandbox to get going!')
       callback()
     }
     else {
