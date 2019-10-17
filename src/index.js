@@ -1,4 +1,4 @@
-let {readArc} = require('@architect/utils')
+let {readArc, updater} = require('@architect/utils')
 let parallel = require('run-parallel')
 let code = require('./lambda')
 let assets = require('./public')
@@ -20,7 +20,9 @@ let installArc = require('./_install-arc')
  * @param {Function} callback - a node style errback
  * @returns {Promise} - (if no callback is supplied)
  */
-module.exports = function create({options={}, folder=process.cwd(), install, update}, callback) {
+module.exports = function create (params, callback) {
+  let {options={}, folder=process.cwd(), install, standalone, update} = params
+
   let promise
   if (!callback) {
     promise = new Promise(function ugh(res, rej) {
@@ -30,6 +32,7 @@ module.exports = function create({options={}, folder=process.cwd(), install, upd
     })
   }
 
+  if (!update) update = updater('Create')
   let {arc} = readArc({cwd: folder})
 
   let supported = ['node', 'ruby', 'python', 'rb', 'py', 'js']
@@ -112,7 +115,7 @@ module.exports = function create({options={}, folder=process.cwd(), install, upd
       if (dirs.length) {
         dirs.forEach(dir => update.done(`Created new project files in ${dir}`))
       }
-      if (install) {
+      if (install && standalone) {
         installArc({folder, update}, callback)
       }
       else {

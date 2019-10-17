@@ -1,6 +1,7 @@
 let path = require('path')
 let exists = require('fs').existsSync
 let mkdir = require('mkdirp').sync
+let {updater} = require('@architect/utils')
 
 let getName = require('./_get-name')
 let arcTemplate = require('./_arc-template')
@@ -14,7 +15,9 @@ let arcPackage = require('./_arc-package')
  * - Generates project manifest (.arc)
  * - Flags Architect for installation
  */
-module.exports = async function maybeCreate({options=[], update}) {
+module.exports = async function maybeCreate ({options=[], standalone=false, update}) {
+  if (!update) update = updater('Create')
+
   /**
    * First, figure out where we're working, and what our project name is
    */
@@ -30,7 +33,7 @@ module.exports = async function maybeCreate({options=[], update}) {
     update.status(
       'Bootstrapping new Architect project',
       `Project name: ${name}`,
-      `Working dir: ${folder}`
+      `Creating in: ${folder}`
     )
     mkdir(folder).sync
   }
@@ -39,7 +42,9 @@ module.exports = async function maybeCreate({options=[], update}) {
   /**
    * Add a package.json to install Arc into (if necessary)
    */
-  let install = arcPackage({options, name, folder})
+  let install = false
+  if (standalone)
+    install = arcPackage({options, name, folder})
 
   /**
    * Return folder (working dir) and install status
