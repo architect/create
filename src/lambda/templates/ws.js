@@ -1,8 +1,8 @@
 let learn = 'learn more about WebSocket functions here: https://arc.codes/primitives/ws'
 
 let nodejs = `// ${learn}
-exports.handler = async function subscribe(payload) {
-  console.log(JSON.stringify(payload, null, 2))
+exports.handler = async function ws (req) {
+  console.log(JSON.stringify(req, null, 2))
   return {statusCode: 200}
 }`
 

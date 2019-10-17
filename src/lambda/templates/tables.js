@@ -1,8 +1,8 @@
 let learn = 'learn more about DynamoDB table stream functions here: https://arc.codes/primitives/tables'
 
 let nodejs = `// ${learn}
-exports.handler = async function subscribe(payload) {
-  console.log(JSON.stringify(payload, null, 2))
+exports.handler = async function table (event) {
+  console.log(JSON.stringify(event, null, 2))
   return
 }`
 

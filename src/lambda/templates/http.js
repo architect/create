@@ -71,7 +71,7 @@ function html (lang, ext) {
 }
 
 let nodejs = `// ${learn}
-exports.handler = async function http(req) {
+exports.handler = async function http (req) {
   return {
     headers: {'content-type': 'text/html; charset=utf8'},
     body: \`${html('Node.js', 'js')}\`
