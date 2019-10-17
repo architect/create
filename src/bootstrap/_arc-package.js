@@ -9,9 +9,9 @@ let exists = fs.existsSync
  * - `false`: do not install @architect/architect
  */
 module.exports = function arcPackage({options, name, folder}) {
-  let isGlobal = options[0].includes === 'node' &&
-                 options[1].includes === 'arc' &&
-                 options[2] === 'create'
+  let isGlobal = options[0] && options[0].includes('node') &&
+                 options[1] && options[1].includes('arc') &&
+                 options[2] && options[2] === 'create'
                  // || options[1].includes('arc-create')
   if (!isGlobal) {
     let package = {
