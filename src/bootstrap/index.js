@@ -15,7 +15,6 @@ let arcPackage = require('./_arc-package')
  * - Flags Architect for installation
  */
 module.exports = async function maybeCreate({options=[], update}) {
-
   /**
    * First, figure out where we're working, and what our project name is
    */
