@@ -37,7 +37,7 @@ module.exports = async function maybeCreate ({options=[], standalone=false, upda
     )
     mkdir(folder).sync
   }
-  arcTemplate({name, folder, update})
+  arcTemplate({name, folder, standalone, update})
 
   /**
    * Add a package.json to install Arc into (if necessary)

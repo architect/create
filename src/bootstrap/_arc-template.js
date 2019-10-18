@@ -2,7 +2,7 @@ let {join} = require('path')
 let fs = require('fs')
 let exists = fs.existsSync
 
-module.exports = function arcTemplate ({name, folder, update}) {
+module.exports = function arcTemplate ({name, folder, standalone, update}) {
   // most basic default Architect app possible
   let arcFile = `@app
 ${name}
@@ -27,13 +27,14 @@ get /
                     exists(pathToYAML) ||
                     exists(pathToApp)
   if (initialized) {
-    update.done('Existing Architect project manifest (.arc) found')
+    if (standalone)
+      update.done('Existing Architect project manifest (.arc) found')
   }
   else {
-    // This is used further down the line in @arc/arc processes
-    // TODO maybe pass params between 'before' fns so we don't have to set an env var?
+    // This is used further down the line in @arc/arc processes to ensure correctly ordered printing
     process.env.INITIALIZED = true
     fs.writeFileSync(pathToArc, arcFile)
-    update.done('Created Architect project manifest (.arc)')
+    if (standalone)
+      update.done('Created Architect project manifest (.arc)')
   }
 }
