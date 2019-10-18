@@ -2,6 +2,14 @@
 
 ---
 
+## [1.0.3] 2019-10-18
+
+### Added
+
+- Reintroduces backwards compatible `arc init` invocation from `@architect/architect`
+
+---
+
 ## [1.0.0 - 1.0.2] 2019-10-17
 
 ### Background
