@@ -10,9 +10,11 @@ let exists = fs.existsSync
  */
 module.exports = function arcPackage ({options, name, folder}) {
   // Don't install if invoked from a globally installed @arc/arc
-  let isGlobal = options[0] && options[0].includes('node') &&
-                 options[1] && options[1].includes('arc') &&
-                 options[2] && options[2] === 'create'
+  let isGlobal = (options[0] && options[1] && options[2] &&
+                  options[0].includes('node') &&  // Node invoke path may vary
+                  options[1].includes('arc')) &&  // .. same deal with the Arc path
+                  options[2] === 'create' ||      // == 'arc create' via global install
+                  options[2] === 'init'           // Backwards compat
   if (!isGlobal) {
     let package = {
       name,
