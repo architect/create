@@ -119,7 +119,8 @@ module.exports = function create (params, callback) {
         installArc({folder, update}, callback)
       }
       else {
-        update.done('Done!')
+        if (standalone)
+          update.done('Done!')
         callback()
       }
     }

@@ -32,8 +32,8 @@ module.exports = async function maybeCreate ({options=[], standalone=false, upda
   if (folder !== process.cwd && !exists(folder)) {
     update.status(
       'Bootstrapping new Architect project',
-      `Project name: ${name}`,
-      `Creating in: ${folder}`
+      `Project name .. ${name}`,
+      `Creating in ... ${folder}`
     )
     mkdir(folder).sync
   }
