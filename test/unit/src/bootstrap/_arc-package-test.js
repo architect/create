@@ -36,9 +36,13 @@ test('Set up env', t => {
 })
 
 test('Package writer bails when Architect is called from a global install', t => {
-  t.plan(1)
+  t.plan(2)
   let options = ['/usr/local/bin/node', '/usr/local/bin/arc', 'create']
   let result = arcPackage({options})
+  t.notOk(result, 'Invocation from global install should opt out of Arc installation')
+
+  options = ['/usr/local/bin/node', '/usr/local/bin/arc', 'init']
+  result = arcPackage({options})
   t.notOk(result, 'Invocation from global install should opt out of Arc installation')
 })
 
