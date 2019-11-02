@@ -2,10 +2,11 @@
 
 ---
 
-## [1.0.3] 2019-10-18
+## [1.0.3 - 1.0.4] 2019-10-18
 
 ### Added
 
+- `/public` no longer generated if `@static` `folder` is defined
 - Reintroduces backwards compatible `arc init` invocation from `@architect/architect`
 
 ---
