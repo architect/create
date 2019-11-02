@@ -51,9 +51,12 @@ module.exports = function create (params, callback) {
 
   let functions = []
 
-  // generate ./public with minimal set of static assets
-  if (arc.static)
+  // only generate ./public with minimal set of static assets if 'folder' is not defined
+  let hasFolder = p=> Array.isArray(p) && p[0].toLowerCase() === 'folder'
+  let genPublic = arc.static && arc.static.some(hasFolder) === false
+  if (genPublic) {
     functions = functions.concat(assets.bind({}, {folder}))
+  }
 
   // generate minimal lambda functions
   if (arc.http) {

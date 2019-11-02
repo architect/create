@@ -13,7 +13,7 @@
   "scripts": {
     "test": "npm run lint && npm run test:unit",
     "test:unit": "tape test/**/*-test.js | tap-spec",
-    "lint": "npx eslint ."
+    "lint": "eslint ."
   },
   "license": "Apache-2.0",
   "dependencies": {
