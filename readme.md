@@ -4,6 +4,9 @@
 
 > Architect Create: Bootstrap new Architect projects, and idempotently create new project resources
 
+[![GitHub CI status](https://github.com/architect/create/workflows/Node%20CI/badge.svg)](https://github.com/architect/create/actions?query=workflow%3A%22Node+CI%22)
+
+
 ## Create a new Architect project
 
 ```
