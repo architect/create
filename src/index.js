@@ -91,6 +91,9 @@ module.exports = function create (params, callback) {
   if (arc.ws) {
     let type = 'ws'
     let defaults = ['default', 'connect', 'disconnect']
+    if (process.env.DEPRECATED) {
+      defaults = ['ws-default', 'ws-connect', 'ws-disconnect']
+    }
     functions = functions.concat(Array.from(new Set([...defaults, ...arc.ws])).map(name=> {
       return code.bind({}, {type, runtime, name, folder})
     }))
