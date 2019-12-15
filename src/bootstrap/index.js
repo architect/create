@@ -29,7 +29,7 @@ module.exports = async function maybeCreate ({options=[], standalone=false, upda
   /**
    * Next, create a dir and/or .arc file, if necessary
    */
-  if (folder !== process.cwd && !exists(folder)) {
+  if (folder !== process.cwd() && !exists(folder)) {
     update.status(
       'Bootstrapping new Architect project',
       `Project name .. ${name}`,
