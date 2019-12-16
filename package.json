@@ -1,6 +1,6 @@
 {
   "name": "@architect/create",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Idempotently initialize Architect projects",
   "main": "src/index.js",
   "bin": {
