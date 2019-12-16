@@ -2,6 +2,14 @@
 
 ---
 
+## [1.0.7] 2019-12-15
+
+### Fixed
+
+- Fixes project bootstrapping predicate; thanks @ksjogo!
+
+---
+
 ## [1.0.6] 2019-12-12
 
 ### Changed
