@@ -2,7 +2,7 @@ let {join} = require('path')
 let fs = require('fs')
 let exists = fs.existsSync
 
-module.exports = function arcTemplate ({name, folder, standalone, update}) {
+module.exports = function arcTemplate({name, folder, standalone, update, runtime}) {
   // most basic default Architect app possible
   let arcFile = `@app
 ${name}
@@ -10,14 +10,15 @@ ${name}
 @http
 get /
 
-## Uncomment the following lines to deploy to AWS!
-# @aws
+@aws
+runtime ${runtime}
 # profile default
 # region us-west-1
 # bucket your-private-deploy-bucket
   `
 
   let pathToArc =   join(folder, '.arc')
+  // FIXME add app.arc, arc.toml and arc.yml
   let pathToJSON =  join(folder, 'arc.json')
   let pathToYAML =  join(folder, 'arc.yaml')
   let pathToApp =   join(folder, 'app.arc')

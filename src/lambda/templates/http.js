@@ -1,5 +1,14 @@
 let learn = 'learn more about HTTP functions here: https://arc.codes/primitives/http'
 
+let deno = `import { Context, Event } from "https://deno.land/x/lambda/mod.ts";
+
+export async function handler(event: Event, context: Context) {
+  return {
+    statusCode: 200,
+    body: \`Welcome to deno \${Deno.version.deno} 🦕\`
+  };
+}`
+
 function html (lang, ext) {
   return `
 <!DOCTYPE html>
@@ -93,4 +102,4 @@ def handler(req, context):
     'body': """${html('Python', 'py')}"""
   }`
 
-module.exports = {nodejs, ruby, python}
+module.exports = {nodejs, deno, ruby, python}

@@ -10,7 +10,7 @@ let writeCode = require('./write-code')
 
 /**
  * @param {string} type - required. one of: http, event, queue, table, ws
- * @param {string} runtime - required. one of:  node, ruby, python
+ * @param {string} runtime - required. one of:  node, deno, ruby, python
  * @param {string} method - optional. one of: get, post, put, delete, patch
  * @param {string} path - optional. of the format: /foo/:bar/baz
  * @param {string} name - optional. of the format: hello-world-2020

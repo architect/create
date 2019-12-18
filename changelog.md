@@ -2,6 +2,12 @@
 
 ---
 
+## [1.0.8] 2019-12-17
+
+### Added
+
+- Added custom runtime `deno`
+
 ## [1.0.7] 2019-12-15
 
 ### Fixed

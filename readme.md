@@ -10,7 +10,7 @@
 ## Create a new Architect project
 
 ```
-npm init @architect [--runtime [node, ruby, python]] [project name and/or path]
+npm init @architect [--runtime [node, deno, ruby, python]] [project name and/or path]
 ```
 
 Example:

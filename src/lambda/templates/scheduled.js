@@ -6,6 +6,16 @@ exports.handler = async function scheduled (event) {
   return
 }`
 
+
+let deno = `import { Context, Event } from "https://deno.land/x/lambda/mod.ts";
+
+export async function handler(event: Event, context: Context) {
+  return {
+    statusCode: 200,
+    body: \`Welcome to deno \${Deno.version.deno} 🦕\`
+  };
+}`
+
 let ruby = `# ${learn}
 def handler(event)
   puts event
@@ -18,4 +28,4 @@ def handler(event, context):
   print(context)
   return True`
 
-module.exports = {nodejs, ruby, python}
+module.exports = {nodejs, deno, ruby, python}

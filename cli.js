@@ -11,7 +11,7 @@ let update = updater('Create')
  * Idempotently initializes new Architect projects
  *
  * opts
- * -r|--runtime|runtime ......... set up with one of node, python, or ruby
+ * -r|--runtime|runtime ......... set up with one of node, deno, python, or ruby
  * -v|--verbose|verbose ......... prints all output to console
  */
 
@@ -26,14 +26,15 @@ async function cmd () {
   let standalone = true
   let options = process.argv
 
-  // Bootstrap the project on the filesystem, including new dirs, npm i, etc.
-  let {folder, install} = await bootstrap({options, standalone, update})
-
   // Populate basic project files
   let opts = {
     verbose: options.some(isVerbose),
     runtime: options.some(isRuntime) ? options.slice(options.findIndex(isRuntime))[1] : false
   }
+
+  // Bootstrap the project on the filesystem, including new dirs, npm i, etc.
+  let {folder, install} = await bootstrap({options, standalone, update, runtime: opts.runtime})
+
   return create({options: opts, folder, install, standalone, update})
 }
 

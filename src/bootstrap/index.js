@@ -15,7 +15,7 @@ let arcPackage = require('./_arc-package')
  * - Generates project manifest (.arc)
  * - Flags Architect for installation
  */
-module.exports = async function maybeCreate ({options=[], standalone=false, update}) {
+module.exports = async function maybeCreate({options=[], standalone=false, update, runtime}) {
   if (!update) update = updater('Create')
 
   /**
@@ -37,7 +37,7 @@ module.exports = async function maybeCreate ({options=[], standalone=false, upda
     )
     mkdir(folder).sync
   }
-  arcTemplate({name, folder, standalone, update})
+  arcTemplate({name, folder, standalone, update, runtime})
 
   /**
    * Add a package.json to install Arc into (if necessary)

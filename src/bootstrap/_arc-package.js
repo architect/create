@@ -8,7 +8,7 @@ let exists = fs.existsSync
  * - `true`: install @architect/architect as the final step
  * - `false`: do not install @architect/architect
  */
-module.exports = function arcPackage ({options, name, folder}) {
+module.exports = function arcPackage({options, name, folder}) {
   // Don't install if invoked from a globally installed @arc/arc
   let isGlobal = (options[0] && options[1] && options[2] &&
                   options[0].includes('node') &&  // Node invoke path may vary
