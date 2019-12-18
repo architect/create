@@ -36,14 +36,15 @@ module.exports = function create (params, callback) {
   let {arc} = readArc({cwd: folder})
 
   let supported = ['node', 'deno', 'ruby', 'python', 'rb', 'py', 'js']
-
   let node = 'nodejs10.x'
   let deno = 'deno'
   let ruby = 'ruby2.5'
   let python = 'python3.7'
 
   let find = setting=> setting[0] === 'runtime'
-  let runtime = arc.aws && arc.aws.some(find)? arc.aws.find(find)[1] : node
+  let runtime = (arc.aws && arc.aws.some(find))? arc.aws.find(find)[1] : node
+  if (runtime == false)
+    runtime = node
   let override = options.runtime
   if (supported.includes(override)) {
     let runtimes = {node, ruby, python, rb:ruby, py:python, js:node, deno}
