@@ -11,7 +11,7 @@ ${name}
 get /
 
 @aws
-runtime ${runtime}
+runtime ${runtime === false? 'node' : runtime}
 # profile default
 # region us-west-1
 # bucket your-private-deploy-bucket
