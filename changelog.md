@@ -2,11 +2,21 @@
 
 ---
 
-## [1.0.8] 2019-12-17
+## [1.0.10] 2019-12-24
+
+### Fixed
+
+- Fixes broken 'runtime' value during initialization
+
+---
+
+## [1.0.8 - 1.0.9] 2019-12-17
 
 ### Added
 
 - Added custom runtime `deno`
+
+---
 
 ## [1.0.7] 2019-12-15
 
