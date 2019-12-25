@@ -20,7 +20,7 @@ let installArc = require('./_install-arc')
  * @param {Function} callback - a node style errback
  * @returns {Promise} - (if no callback is supplied)
  */
-module.exports = function create (params, callback) {
+module.exports = function create (params={}, callback) {
   let {options={}, folder=process.cwd(), install, standalone, update} = params
 
   let promise

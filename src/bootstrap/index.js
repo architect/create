@@ -15,7 +15,8 @@ let arcPackage = require('./_arc-package')
  * - Generates project manifest (.arc)
  * - Flags Architect for installation
  */
-module.exports = async function maybeCreate({options=[], standalone=false, update, runtime}) {
+module.exports = async function maybeCreate(params={}) {
+  let {options=[], runtime, standalone=false, update} = params
   if (!update) update = updater('Create')
 
   /**
