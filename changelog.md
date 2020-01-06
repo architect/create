@@ -2,6 +2,19 @@
 
 ---
 
+## [1.0.11] 2020-01-06
+
+### Fixed
+
+- Fixed issue with incorrectly setting default runtime, which could crash Sandbox
+
+
+### Changed
+
+- Updated dependencies
+
+---
+
 ## [1.0.10] 2019-12-24
 
 ### Fixed
