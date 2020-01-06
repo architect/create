@@ -3,6 +3,8 @@ let fs = require('fs')
 let exists = fs.existsSync
 
 module.exports = function arcTemplate({name, folder, standalone, update, runtime}) {
+  runtime = runtime ? `runtime ${runtime}\n` : ''
+
   // most basic default Architect app possible
   let arcFile = `@app
 ${name}
@@ -11,8 +13,7 @@ ${name}
 get /
 
 @aws
-runtime ${runtime === false? 'node' : runtime}
-# profile default
+${runtime}# profile default
 # region us-west-1
 # bucket your-private-deploy-bucket
   `

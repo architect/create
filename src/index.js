@@ -43,8 +43,9 @@ module.exports = function create (params={}, callback) {
 
   let find = setting=> setting[0] === 'runtime'
   let runtime = (arc.aws && arc.aws.some(find))? arc.aws.find(find)[1] : node
-  if (runtime == false)
+  if (runtime === false) {
     runtime = node
+  }
   let override = options.runtime
   if (supported.includes(override)) {
     let runtimes = {node, ruby, python, rb:ruby, py:python, js:node, deno}
