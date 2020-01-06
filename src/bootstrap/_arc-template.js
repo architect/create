@@ -3,9 +3,10 @@ let fs = require('fs')
 let exists = fs.existsSync
 
 module.exports = function arcTemplate({name, folder, standalone, update, runtime}) {
+  // Only add the @aws runtime setting into the Arc template if specified
   runtime = runtime ? `runtime ${runtime}\n` : ''
 
-  // most basic default Architect app possible
+  // Most basic default Architect app possible
   let arcFile = `@app
 ${name}
 
