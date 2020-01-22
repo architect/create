@@ -2,6 +2,15 @@
 
 ---
 
+## [1.0.12] 2020-01-22
+
+### Changed
+
+- Update default node version to `nodejs12.x`
+- Updated dependencies
+
+---
+
 ## [1.0.11] 2020-01-06
 
 ### Fixed

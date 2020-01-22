@@ -36,7 +36,7 @@ module.exports = function create (params={}, callback) {
   let {arc} = readArc({cwd: folder})
 
   let supported = ['node', 'deno', 'ruby', 'python', 'rb', 'py', 'js']
-  let node = 'nodejs10.x'
+  let node = 'nodejs12.x'
   let deno = 'deno'
   let ruby = 'ruby2.5'
   let python = 'python3.7'
