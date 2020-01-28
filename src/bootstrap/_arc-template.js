@@ -16,7 +16,6 @@ get /
 @aws
 ${runtime}# profile default
 # region us-west-1
-# bucket your-private-deploy-bucket
   `
 
   let pathToArc =   join(folder, '.arc')
