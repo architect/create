@@ -2,6 +2,23 @@
 
 ---
 
+## [1.0.14] 2020-01-29
+
+### Changed
+
+- Default `.arc` file no longer includes a boilerplate for `@aws bucket`
+
+---
+
+## [1.0.13] 2020-01-29
+
+### Added
+
+- Added `--static` flag to init to create a basic static asset app (instead of one with a `@http get /` function)
+  - Example: `npm init @architect --static ./myapp`
+
+---
+
 ## [1.0.12] 2020-01-22
 
 ### Changed
