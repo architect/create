@@ -6,9 +6,9 @@ exports.handler = async function ws (req) {
   return {statusCode: 200}
 }`
 
-let deno = `import {Context, Event} from "https://deno.land/x/lambda/mod.ts"
+let deno = `import {Context, APIGatewayProxyEvent} from "https://deno.land/x/lambda/mod.ts"
 
-export async function handler(event: Event, context: Context) {
+export async function handler(event: APIGatewayProxyEvent, context: Context) {
   console.log(event)
   return {statusCode: 200}
 }`
