@@ -1,4 +1,5 @@
-let {readArc, updater} = require('@architect/utils')
+let { updater } = require('@architect/utils')
+let { readArc } = require('@architect/parser')
 let parallel = require('run-parallel')
 let code = require('./lambda')
 let assets = require('./public')
@@ -21,7 +22,7 @@ let installArc = require('./_install-arc')
  * @returns {Promise} - (if no callback is supplied)
  */
 module.exports = function create (params={}, callback) {
-  let {options={}, folder=process.cwd(), install, standalone, update} = params
+  let { options={}, folder=process.cwd(), install, standalone, update } = params
 
   let promise
   if (!callback) {
@@ -33,7 +34,7 @@ module.exports = function create (params={}, callback) {
   }
 
   if (!update) update = updater('Create')
-  let {arc} = readArc({cwd: folder})
+  let { arc } = readArc({ cwd: folder })
 
   let supported = ['node', 'deno', 'ruby', 'python', 'rb', 'py', 'js']
   let node = 'nodejs12.x'
