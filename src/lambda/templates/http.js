@@ -2,12 +2,13 @@ let learn = 'learn more about HTTP functions here: https://arc.codes/primitives/
 
 let deno = `import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts";
 
-export async function handler(
-  event: APIGatewayProxyEvent,
-  context: Context) {
+export async function handler(event: APIGatewayProxyEvent, context: Context) {
     return {
       statusCode: 200,
-      headers: {'content-type': 'text/html; charset=utf8'},
+      headers: {
+        'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
+        'content-type': 'text/html; charset=utf8'
+      },
       body: \`Welcome to deno \${Deno.version.deno} 🦕\`
     };
   }`
@@ -85,7 +86,10 @@ function html (lang, ext) {
 let nodejs = `// ${learn}
 exports.handler = async function http (req) {
   return {
-    headers: {'content-type': 'text/html; charset=utf8'},
+    headers: {
+      'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
+      'content-type': 'text/html; charset=utf8'
+    },
     body: \`${html('Node.js', 'js')}\`
   }
 }`
@@ -93,7 +97,10 @@ exports.handler = async function http (req) {
 let ruby = `# ${learn}
 def handler(req)
   {
-    headers: {'content-type': 'text/html'},
+    headers: {
+      'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
+      'content-type': 'text/html; charset=utf8'
+    },
     body: %q(${html('Ruby', 'rb')})
   }
 end`
@@ -101,7 +108,10 @@ end`
 let python = `# ${learn}
 def handler(req, context):
   return {
-    'headers': {'content-type': 'text/html'},
+    'headers': {
+      'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
+      'content-type': 'text/html; charset=utf8'
+    },
     'body': """${html('Python', 'py')}"""
   }`
 

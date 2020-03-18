@@ -11,6 +11,7 @@
 
 ### Changed
 
+- Added `cache-control` header by default
 - Updated dependencies
 
 ---
