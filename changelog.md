@@ -2,6 +2,19 @@
 
 ---
 
+## [1.0.16] 2020-03-02
+
+### Added
+
+- Added support for running without an existing Architect project manifest
+
+
+### Changed
+
+- Updated dependencies
+
+---
+
 ## [1.0.15] 2020-02-05
 
 ### Changed
