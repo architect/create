@@ -19,7 +19,7 @@ def handler(event)
 end`
 
 let python = `# ${learn}
-def handler(event):
+def handler(event, context):
   print(event)
   return True`
 
