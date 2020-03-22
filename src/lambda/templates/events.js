@@ -7,9 +7,7 @@ exports.handler = async function subscribe (event) {
 }`
 
 let deno = `// ${learn}
-import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts"
-
-export async function handler (event: APIGatewayProxyEvent, context: Context) {
+export async function handler (event: object) {
   console.log(JSON.stringify(event, null, 2))
   return
 }`
@@ -21,7 +19,7 @@ def handler(event)
 end`
 
 let python = `# ${learn}
-def handler(event, context):
+def handler(event):
   print(event)
   return True`
 

@@ -71,9 +71,7 @@ function html (lang, ext) {
 }
 
 let deno = `// ${learn}
-import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts";
-
-export async function handler (event: APIGatewayProxyEvent, context: Context) {
+export async function handler (event: object) {
   return {
     statusCode: 200,
     headers: {
@@ -107,7 +105,7 @@ def handler(req)
 end`
 
 let python = `# ${learn}
-def handler(req, context):
+def handler(req):
   return {
     'headers': {
       'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
