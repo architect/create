@@ -2,6 +2,15 @@
 
 ---
 
+## [1.0.18] 2020-03-22
+
+### Changed
+
+- Cleaned up boilerplate code
+- Updated dependencies
+
+---
+
 ## [1.0.16 - 17] 2020-03-02
 
 ### Added

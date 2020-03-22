@@ -13,7 +13,7 @@ ${name}
 @http
 get /
 
-@aws
+# @aws
 ${runtime}# profile default
 # region us-west-1
   `

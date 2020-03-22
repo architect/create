@@ -1,18 +1,5 @@
 let learn = 'learn more about HTTP functions here: https://arc.codes/primitives/http'
 
-let deno = `import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts";
-
-export async function handler(event: APIGatewayProxyEvent, context: Context) {
-    return {
-      statusCode: 200,
-      headers: {
-        'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
-        'content-type': 'text/html; charset=utf8'
-      },
-      body: \`Welcome to deno \${Deno.version.deno} 🦕\`
-    };
-  }`
-
 function html (lang, ext) {
   return `
 <!DOCTYPE html>
@@ -82,6 +69,20 @@ function html (lang, ext) {
 </html>
 `
 }
+
+let deno = `// ${learn}
+import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts";
+
+export async function handler (event: APIGatewayProxyEvent, context: Context) {
+  return {
+    statusCode: 200,
+    headers: {
+      'cache-control': 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
+      'content-type': 'text/html; charset=utf8'
+    },
+    body: \`${html('deno', 'ts')}\`
+  };
+}`
 
 let nodejs = `// ${learn}
 exports.handler = async function http (req) {

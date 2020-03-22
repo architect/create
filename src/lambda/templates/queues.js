@@ -6,10 +6,12 @@ exports.handler = async function queue (event) {
   return
 }`
 
-let deno = `import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts"
+let deno = `// ${learn}
+import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts"
 
-export async function handler(event: APIGatewayProxyEvent, context: Context) {
-  return {message: \`Welcome to deno \${Deno.version.deno} 🦕\`}
+export async function handler (event: APIGatewayProxyEvent, context: Context) {
+  console.log(JSON.stringify(event, null, 2))
+  return
 }`
 
 let ruby = `# ${learn}
@@ -21,7 +23,6 @@ end`
 let python = `# ${learn}
 def handler(event, context):
   print(event)
-  print(context)
   return True`
 
 module.exports = {nodejs, deno, ruby, python}

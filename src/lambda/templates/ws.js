@@ -6,10 +6,11 @@ exports.handler = async function ws (req) {
   return {statusCode: 200}
 }`
 
-let deno = `import {Context, APIGatewayProxyEvent} from "https://deno.land/x/lambda/mod.ts"
+let deno = `// ${learn}
+import { Context, APIGatewayProxyEvent } from "https://deno.land/x/lambda/mod.ts"
 
-export async function handler(event: APIGatewayProxyEvent, context: Context) {
-  console.log(event)
+export async function handler (event: APIGatewayProxyEvent, context: Context) {
+  console.log(JSON.stringify(event, null, 2))
   return {statusCode: 200}
 }`
 
@@ -22,7 +23,6 @@ end`
 let python = `# ${learn}
 def handler(event, context):
   print(event)
-  print(context)
   return {statusCode: 200}`
 
 module.exports = {nodejs, deno, ruby, python}
