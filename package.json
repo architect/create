@@ -20,7 +20,7 @@
   "dependencies": {
     "@architect/parser": "~2.1.1",
     "@architect/utils": "~1.5.1",
-    "chalk": "~4.0.0",
+    "chalk": "~4.1.0",
     "mkdirp": "~1.0.3",
     "run-parallel": "~1.1.9"
   },
