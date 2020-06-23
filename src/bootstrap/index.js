@@ -1,7 +1,6 @@
 let path = require('path')
-let exists = require('fs').existsSync
-let mkdir = require('mkdirp').sync
-let {updater} = require('@architect/utils')
+let { existsSync, mkdirSync } = require('fs')
+let { updater } = require('@architect/utils')
 
 let getName = require('./_get-name')
 let arcTemplate = require('./_arc-template')
@@ -15,14 +14,14 @@ let arcPackage = require('./_arc-package')
  * - Generates project manifest (.arc)
  * - Flags Architect for installation
  */
-module.exports = async function maybeCreate(params={}) {
-  let {options=[], runtime, standalone=false, update} = params
+module.exports = function bootstrap (params = {}) {
+  let { options = [], runtime, standalone = false, update } = params
   if (!update) update = updater('Create')
 
   /**
    * First, figure out where we're working, and what our project name is
    */
-  let {name, folder} = getName({options, update})
+  let { name, folder } = getName({ options, update })
   // Get the name passed in, or use the current dir name
   let currentDirName = process.cwd().split(path.sep).reverse().shift()
   name = name || currentDirName
@@ -30,25 +29,26 @@ module.exports = async function maybeCreate(params={}) {
   /**
    * Next, create a dir and/or .arc file, if necessary
    */
-  if (folder !== process.cwd() && !exists(folder)) {
+  if (folder !== process.cwd() && !existsSync(folder)) {
     update.status(
       'Bootstrapping new Architect project',
       `Project name .. ${name}`,
       `Creating in ... ${folder}`
     )
-    mkdir(folder).sync
+    mkdirSync(folder, { recursive: true })
   }
-  arcTemplate({name, folder, standalone, update, runtime})
+  arcTemplate({ name, folder, standalone, update, runtime })
 
   /**
    * Add a package.json to install Arc into (if necessary)
    */
   let install = false
-  if (standalone)
-    install = arcPackage({options, name, folder})
+  if (standalone) {
+    install = arcPackage({ options, name, folder })
+  }
 
   /**
    * Return folder (working dir) and install status
    */
-  return {folder, install}
+  return { folder, install }
 }

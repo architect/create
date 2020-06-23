@@ -1,8 +1,7 @@
-let fs = require('fs')
-let mkdir = require('mkdirp')
-let {join} = require('path')
+let { existsSync, mkdirSync } = require('fs')
+let { join } = require('path')
 let parallel = require('run-parallel')
-let {getLambdaName} = require('@architect/utils')
+let { getLambdaName } = require('@architect/utils')
 
 let getExtension = require('./get-extension')
 let writeArcConfig = require('./write-arc-config')
@@ -15,36 +14,36 @@ let writeCode = require('./write-code')
  * @param {string} path - optional. of the format: /foo/:bar/baz
  * @param {string} name - optional. of the format: hello-world-2020
  */
-module.exports = function code({type, runtime, method, path, name, folder}, callback) {
+module.exports = function code ({ type, runtime, method, path, name, folder }, callback) {
 
-  let dest = type === 'http'? `${method.toLowerCase()}${getLambdaName(path)}` : name
+  let dest = type === 'http' ? `${method.toLowerCase()}${getLambdaName(path)}` : name
   let extension = getExtension(runtime)
   let basePath = join(folder, 'src', type, dest)
   let fullPath = join(basePath, `index.${extension}`)
   let configPath = join(basePath, `.arc-config`)
 
   // immediate bail if either file exists
-  if (fs.existsSync(fullPath) || fs.existsSync(configPath)) {
+  if (existsSync(fullPath) || existsSync(configPath)) {
     callback()
   }
   else {
-    mkdir.sync(basePath)
+    mkdirSync(basePath, { recursive: true })
 
     parallel({
-      config(callback) {
+      config (callback) {
         writeArcConfig({
           configPath,
           runtime
         }, callback)
       },
-      code(callback) {
+      code (callback) {
         writeCode({
           type,
           runtime,
           fullPath
         }, callback)
       }
-    }, function done(err) {
+    }, function done (err) {
       if (err) callback(err)
       else {
         callback(null, `src/${type}`)

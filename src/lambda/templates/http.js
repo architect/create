@@ -114,4 +114,4 @@ def handler(req, context):
     'body': """${html('Python', 'py')}"""
   }`
 
-module.exports = {nodejs, deno, ruby, python}
+module.exports = { nodejs, deno, ruby, python }

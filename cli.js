@@ -2,8 +2,8 @@
 let create = require('.')
 let banner = require('./src/bootstrap/_banner')
 let bootstrap = require('./src/bootstrap')
-let {version} = require('./package.json')
-let {updater} = require('@architect/utils')
+let { version } = require('./package.json')
+let { updater } = require('@architect/utils')
 let simpleStatic = require('./src/simple-static')
 let update = updater('Create')
 
@@ -18,13 +18,14 @@ let update = updater('Create')
  * -v|--verbose|verbose ......... prints all output to console
  */
 
-let isRuntime = opt=> opt === 'runtime' || opt === '--runtime' || opt === '-r'
-let isVerbose = opt=> opt === 'verbose' || opt === '--verbose' || opt === '-v'
-let isStatic =  opt=> opt === 'static' || opt === '--static' || opt === '-s'
+let isRuntime = opt => opt === 'runtime' || opt === '--runtime' || opt === '-r'
+let isVerbose = opt => opt === 'verbose' || opt === '--verbose' || opt === '-v'
+let isStatic =  opt => opt === 'static' || opt === '--static' || opt === '-s'
 
+// eslint-disable-next-line
 async function cmd () {
   // Print banner
-  banner({version})
+  banner({ version })
 
   // Used by bootstrap to differentiate between arc create and preflight bootstrap calls
   let standalone = true
@@ -42,9 +43,9 @@ async function cmd () {
   }
 
   // Bootstrap the project on the filesystem, including new dirs, npm i, etc.
-  let {folder, install} = await bootstrap({options, standalone, update, runtime: opts.runtime})
+  let { folder, install } = bootstrap({ options, standalone, update, runtime: opts.runtime })
 
-  return create({options: opts, folder, install, standalone, update})
+  return create({ options: opts, folder, install, standalone, update })
 }
 
 module.exports = cmd
@@ -59,5 +60,5 @@ if (require.main === module) {
       update.error(err)
       process.exit(1)
     }
-  })();
+  })()
 }

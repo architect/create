@@ -23,4 +23,4 @@ def handler(event, context):
   print(event)
   return {statusCode: 200}`
 
-module.exports = {nodejs, deno, ruby, python}
+module.exports = { nodejs, deno, ruby, python }
