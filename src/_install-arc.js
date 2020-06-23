@@ -3,12 +3,12 @@ let spawn = require('child_process').spawn
 /**
  * Install @architect/architect into a fresh new project
  */
-module.exports = function installArc ({folder, update}, callback) {
+module.exports = function installArc ({ folder, update }, callback) {
   let cwd = folder
   let canceled = false
   update.start('Installing Architect...')
 
-  let child = spawn('npm', ['i', '@architect/architect', '--save-dev'], {cwd, shell: true})
+  let child = spawn('npm', [ 'i', '@architect/architect', '--save-dev' ], { cwd, shell: true })
   child.stdout.on('data', data => {
     if (!canceled) {
       update.status('Installing Architect...')

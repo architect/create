@@ -1,7 +1,6 @@
 let parallel = require('run-parallel')
-let fs = require('fs')
-let mkdir = require('mkdirp')
-let {join} = require('path')
+let { existsSync, mkdirSync, writeFile } = require('fs')
+let { join } = require('path')
 
 let html = require('./templates/html')
 let css = require('./templates/css')
@@ -13,18 +12,19 @@ let mjs = require('./templates/mjs')
  * - public/index.css
  * - public/index.js
  */
-module.exports = function assets({folder}, callback) {
+module.exports = function assets ({ folder }, callback) {
   let publicPath = join(folder, 'public')
-  if (fs.existsSync(publicPath)) {
+  if (existsSync(publicPath)) {
     callback()
   }
   else {
-    mkdir.sync(publicPath)
+    mkdirSync(publicPath, { recursive: true })
+
     parallel([
-      fs.writeFile.bind({}, join('public', 'index.html'), html),
-      fs.writeFile.bind({}, join('public', 'index.css'), css),
-      fs.writeFile.bind({}, join('public', 'index.js'), mjs),
-    ], function done(err) {
+      writeFile.bind({}, join('public', 'index.html'), html),
+      writeFile.bind({}, join('public', 'index.css'), css),
+      writeFile.bind({}, join('public', 'index.js'), mjs),
+    ], function done (err) {
       if (err) callback(err)
       else {
         callback(null, 'public/')

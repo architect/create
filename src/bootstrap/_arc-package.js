@@ -1,6 +1,5 @@
-let {join} = require('path')
-let fs = require('fs')
-let exists = fs.existsSync
+let { join } = require('path')
+let { existsSync, readFileSync, writeFileSync } = require('fs')
 
 /**
  * Write basic boilerplate package.json to install @architect/architect (if necessary)
@@ -8,7 +7,7 @@ let exists = fs.existsSync
  * - `true`: install @architect/architect as the final step
  * - `false`: do not install @architect/architect
  */
-module.exports = function arcPackage({options, name, folder}) {
+module.exports = function arcPackage ({ options, name, folder }) {
   // Don't install if invoked from a globally installed @arc/arc
   let isGlobal = (options[0] && options[1] && options[2] &&
                   options[0].includes('node') &&  // Node invoke path may vary
@@ -19,19 +18,19 @@ module.exports = function arcPackage({options, name, folder}) {
     let package = {
       name,
       version: '0.0.0',
-      description: "A fresh new Architect project!",
+      description: 'A fresh new Architect project!',
       scripts: {
         start: 'npx sandbox'
       },
       devDependencies: {}
     }
     let packageFile = join(folder, 'package.json')
-    if (!exists(packageFile)) {
-      fs.writeFileSync(packageFile, JSON.stringify(package,null,2))
+    if (!existsSync(packageFile)) {
+      writeFileSync(packageFile, JSON.stringify(package, null, 2))
       return true
     }
     else {
-      let existing = JSON.parse(fs.readFileSync(packageFile).toString())
+      let existing = JSON.parse(readFileSync(packageFile).toString())
       if (existing.dependencies && existing.dependencies['@architect/architect'] ||
           existing.devDependencies && existing.devDependencies['@architect/architect']) {
         return false
