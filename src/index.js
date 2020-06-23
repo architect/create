@@ -21,8 +21,10 @@ let installArc = require('./_install-arc')
  * @param {Function} callback - a node style errback
  * @returns {Promise} - (if no callback is supplied)
  */
-// eslint-disable-next-line // Callers may await this function
+// eslint-disable-next-line
 module.exports = async function create (params = {}, callback) {
+  // Although create should be synchronous, callers may await it, so keep it async
+
   let { options = {}, folder = process.cwd(), install, standalone, update } = params
 
   let promise
