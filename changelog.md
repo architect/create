@@ -2,6 +2,18 @@
 
 ---
 
+## [1.1.0] 2020-06-23
+
+### Changed
+
+- Default Architect project manifest filename is now `app.arc` (changed from `.arc`)
+  - All existing projects are unaffected by this change, and will always support `.arc`
+  - Fixes #805
+- Internal change: implemented new code standard with `@architect/eslint-config`
+- Updated dependencies
+
+---
+
 ## [1.0.18] 2020-03-22
 
 ### Changed
