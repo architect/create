@@ -2,6 +2,14 @@
 
 ---
 
+## [1.1.1] 2020-08-27
+
+### Added
+
+- Added explicit `statusCode` parameters to all responses for forward compatibility with API Gateway HTTP APIs
+
+---
+
 ## [1.1.0] 2020-06-23
 
 ### Changed
