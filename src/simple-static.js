@@ -25,8 +25,8 @@ module.exports = function simplestatic () {
     mkdirSync(join(app, 'public'), { recursive: true })
   }
 
-  // write .arc
-  writeFileSync(join(app, '.arc'), `@app
+  // write app.arc
+  writeFileSync(join(app, 'app.arc'), `@app
 myapp
 
 @static

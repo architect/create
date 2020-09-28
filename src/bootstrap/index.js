@@ -11,7 +11,7 @@ let arcPackage = require('./_arc-package')
  *   Bootstraps project meta files (if necessary)
  *
  * - Generates project folder
- * - Generates project manifest (.arc)
+ * - Generates project manifest (app.arc)
  * - Flags Architect for installation
  */
 module.exports = function bootstrap (params = {}) {
@@ -27,7 +27,7 @@ module.exports = function bootstrap (params = {}) {
   name = name || currentDirName
 
   /**
-   * Next, create a dir and/or .arc file, if necessary
+   * Next, create a dir and/or app.arc file, if necessary
    */
   if (folder !== process.cwd() && !existsSync(folder)) {
     update.status(
