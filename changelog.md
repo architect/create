@@ -2,6 +2,14 @@
 
 ---
 
+## [1.2.0] 2020-09-30
+
+### Added
+
+- Add support for `@http` catchall syntax (e.g. `get /api/*`)
+
+---
+
 ## [1.1.3] 2020-09-30
 
 ### Fixed
