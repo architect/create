@@ -2,6 +2,14 @@
 
 ---
 
+## [1.1.3] 2020-09-30
+
+### Fixed
+
+- Fix issue where `app.arc` manifests accidentally may be overwritten by template initializer
+
+---
+
 ## [1.1.2] 2020-09-28
 
 ### Changed

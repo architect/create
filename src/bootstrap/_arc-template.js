@@ -27,8 +27,11 @@ ${runtime}# profile default
                     existsSync(dotArc) ||
                     existsSync(arcDotJSON) ||
                     existsSync(arcDotYAML)
-  if (initialized && standalone) {
-    update.done('Existing Architect project manifest found')
+  if (initialized) {
+    // Do nothing if already initialized
+    if (standalone) {
+      update.done('Existing Architect project manifest found')
+    }
   }
   else {
     // This is used further down the line in @arc/arc processes to ensure correctly ordered printing
