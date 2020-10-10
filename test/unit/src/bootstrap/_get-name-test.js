@@ -1,5 +1,5 @@
 let test = require('tape')
-let { join } = require('path')
+let { join, resolve } = require('path')
 let getName = require('../../../../src/bootstrap/_get-name')
 
 test('Set up env', t => {
@@ -171,7 +171,7 @@ test('Specify name and/or folder', t => {
 
   local = getName({ options: cmd(npxArcCreate, '/foo') })
   t.equal(local.name, 'foo', 'Project name matches')
-  t.equal(local.folder, join('/', 'foo'), '(Unix only) leading / specifies working dir is root')
+  t.equal(local.folder, join(resolve('/'), 'foo'), 'Leading / specifies working dir is root')
   console.log(local)
 
   local = getName({ options: cmd(npxArcCreate, './') })
@@ -218,7 +218,7 @@ test('Specify name and/or folder', t => {
 
   global = getName({ options: cmd(arcCreate, '/foo') })
   t.equal(global.name, 'foo', 'Project name matches')
-  t.equal(global.folder, join('/', 'foo'), '(Unix only) leading / specifies working dir is root')
+  t.equal(global.folder, join(resolve('/'), 'foo'), 'Leading / specifies working dir is root')
   console.log(global)
 
   global = getName({ options: cmd(arcCreate, './') })
@@ -266,7 +266,7 @@ test('Specify name and/or folder', t => {
 
   init = getName({ options: cmd(npmInit, '/foo') })
   t.equal(init.name, 'foo', 'Project name matches')
-  t.equal(init.folder, join('/', 'foo'), '(Unix only) leading / specifies working dir is root')
+  t.equal(init.folder, join(resolve('/'), 'foo'), 'Leading / specifies working dir is root')
   console.log(init)
 
   init = getName({ options: cmd(npmInit, './') })
