@@ -28,7 +28,7 @@
     "run-parallel": "~1.1.9"
   },
   "devDependencies": {
-    "@architect/eslint-config": "0.0.1",
+    "@architect/eslint-config": "1.0.0",
     "cross-env": "~7.0.2",
     "eslint": "^7.7.0",
     "nyc": "~15.1.0",
