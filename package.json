@@ -22,7 +22,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@architect/parser": "~2.3.0",
+    "@architect/inventory": "~1.1.0-RC.6",
     "@architect/utils": "~1.5.12",
     "chalk": "~4.1.0",
     "run-parallel": "~1.1.9"

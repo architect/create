@@ -1,8 +1,8 @@
 let { updater } = require('@architect/utils')
-let { readArc } = require('@architect/parser')
+let inventory = require('@architect/inventory')
 let parallel = require('run-parallel')
 let code = require('./lambda')
-let assets = require('./public')
+let assets = require('./static')
 let bootstrap = require('./bootstrap')
 let installArc = require('./_install-arc')
 
@@ -37,107 +37,61 @@ module.exports = async function create (params = {}, callback) {
   }
 
   if (!update) update = updater('Create')
-  let { arc } = readArc({ cwd: folder })
 
-  let supported = [ 'node', 'deno', 'ruby', 'python', 'rb', 'py', 'js' ]
-  let node = 'nodejs12.x'
-  let deno = 'deno'
-  let ruby = 'ruby2.5'
-  let python = 'python3.7'
+  try {
+    let { inventory: inv } = await inventory({ cwd: folder })
+    let { http, events, queues, scheduled, static, streams, ws } = inv
 
-  let find = setting => setting[0] === 'runtime'
-  let runtime = (arc.aws && arc.aws.some(find)) ? arc.aws.find(find)[1] : node
-  if (runtime === false) {
-    runtime = node
-  }
-  let override = options.runtime
-  if (supported.includes(override)) {
-    let runtimes = { node, ruby, python, rb: ruby, py: python, js: node, deno }
-    runtime = runtimes[override]
-  }
+    let supported = [ 'node', 'deno', 'ruby', 'python', 'rb', 'py', 'js' ]
+    let node = 'nodejs12.x'
+    let deno = 'deno'
+    let ruby = 'ruby2.7'
+    let python = 'python3.8'
 
-  let functions = []
-
-  // only generate ./public with minimal set of static assets if 'folder' is not defined
-  let hasFolder = p => Array.isArray(p) && p[0].toLowerCase() === 'folder'
-  let genPublic = arc.static && arc.static.some(hasFolder) === false
-  if (genPublic) {
-    functions = functions.concat(assets.bind({}, { folder }))
-  }
-
-  // generate minimal lambda functions
-  if (arc.http) {
-    let type = 'http'
-    functions = functions.concat(arc.http.map(route => {
-      return code.bind({}, { type, runtime, method: route[0], path: route[1], folder })
-    }))
-  }
-
-  if (arc.events) {
-    let type = 'events'
-    functions = functions.concat(arc.events.map(name => {
-      return code.bind({}, { type, runtime, name, folder })
-    }))
-  }
-
-  if (arc.queues) {
-    let type = 'queues'
-    functions = functions.concat(arc.queues.map(name => {
-      return code.bind({}, { type, runtime, name, folder })
-    }))
-  }
-
-  if (arc.scheduled) {
-    let type = 'scheduled'
-    functions = functions.concat(arc.scheduled.map(tuple => {
-      let name = tuple.shift()
-      return code.bind({}, { type, runtime, name, folder })
-    }))
-  }
-
-  if (arc.ws) {
-    let type = 'ws'
-    let defaults = [ 'default', 'connect', 'disconnect' ]
-    if (process.env.DEPRECATED) {
-      defaults = [ 'ws-default', 'ws-connect', 'ws-disconnect' ]
+    let runtime = inv._project.defaultFunctionConfig.runtime
+    let override = options.runtime
+    if (supported.includes(override)) {
+      let runtimes = { node, ruby, python, rb: ruby, py: python, js: node, deno }
+      runtime = runtimes[override]
     }
-    functions = functions.concat(Array.from(new Set([ ...defaults, ...arc.ws ])).map(name => {
-      return code.bind({}, { type, runtime, name, folder })
-    }))
-  }
 
-  if (arc.tables) {
-    let type = 'tables'
-    let results = []
-    arc.tables.forEach(table => {
-      let name = Object.keys(table)[0]
-      let hasStream = table[name].stream && !!(table[name].stream)
-      if (hasStream) {
-        results.push(code.bind({}, { type, runtime, name, folder }))
+    let functions = []
+
+    let binder = {}
+    let lambdae = [ 'http', 'events', 'queues', 'scheduled', 'static', 'streams', 'ws' ]
+    lambdae.forEach(type => {
+      binder[type] = fn => code.bind({}, { ...fn, type, runtime })
+    })
+
+    // Generate minimal static assets and Lambdae
+    if (static)     functions.push(assets.bind({}, { folder, inv }))
+    if (http)       functions.push(...http.map(binder.http))
+    if (events)     functions.push(...events.map(binder.events))
+    if (queues)     functions.push(...queues.map(binder.queues))
+    if (scheduled)  functions.push(...scheduled.map(binder.scheduled))
+    if (ws)         functions.push(...ws.map(binder.ws))
+    if (streams)    functions.push(...streams.map(binder.streams))
+
+    parallel(functions, function done (err, results) {
+      if (err) callback(err)
+      else {
+        let dirs = [ ...new Set(results) ].filter(d => d)
+        if (dirs.length) {
+          dirs.forEach(dir => update.done(`Created new project files in ${dir}`))
+        }
+        if (install && standalone) {
+          installArc({ folder, update }, callback)
+        }
+        else {
+          if (standalone) update.done('Done!')
+          callback()
+        }
       }
     })
-    if (results.length > 0) {
-      functions = functions.concat(results)
-    }
   }
-
-  parallel(functions, function done (err, results) {
-    if (err) callback(err)
-    else {
-      let dirs = [ ...new Set(results) ].filter(d => d)
-      if (dirs.length) {
-        dirs.forEach(dir => update.done(`Created new project files in ${dir}`))
-      }
-      if (install && standalone) {
-        installArc({ folder, update }, callback)
-      }
-      else {
-        if (standalone)
-          update.done('Done!')
-        callback()
-      }
-    }
-  })
+  catch (err) {
+    callback(err)
+  }
 
   return promise
 }
