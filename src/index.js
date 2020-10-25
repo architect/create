@@ -39,7 +39,7 @@ module.exports = async function create (params = {}, callback) {
   if (!update) update = updater('Create')
 
   try {
-    let { inventory: inv } = await inventory({ cwd: folder })
+    let { inv } = await inventory({ cwd: folder })
     let { http, events, queues, scheduled, static, streams, ws } = inv
 
     let supported = [ 'node', 'deno', 'ruby', 'python', 'rb', 'py', 'js' ]
