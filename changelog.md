@@ -7,6 +7,14 @@
 ### Added
 
 - Added support for custom file paths
+- Added support for custom default templates, thanks @Ankcorn!
+  - Add per-pragma custom templates via the Arc preferences file, example:
+```arc
+# preferences.arc or prefs.arc
+@create
+templates
+  http path/to/template/file
+```
 
 
 ### Changed

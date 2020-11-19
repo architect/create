@@ -41,6 +41,7 @@ module.exports = async function create (params = {}, callback) {
 
   try {
     let { inv } = await inventory({ cwd: folder })
+    let prefs = inv._project.preferences
     let { http, events, queues, scheduled, static, streams, ws } = inv
 
     let supported = [ 'node', 'deno', 'ruby', 'python', 'rb', 'py', 'js' ]
@@ -61,7 +62,7 @@ module.exports = async function create (params = {}, callback) {
     let binder = {}
     let lambdae = [ 'http', 'events', 'queues', 'scheduled', 'static', 'streams', 'ws' ]
     lambdae.forEach(type => {
-      binder[type] = fn => code.bind({}, { ...fn, type, runtime })
+      binder[type] = fn => code.bind({}, { ...fn, type, runtime, prefs })
     })
 
     // Generate minimal static assets and Lambdae

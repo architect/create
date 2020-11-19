@@ -3,6 +3,7 @@ let { join } = require('path')
 let parallel = require('run-parallel')
 let getExtension = require('./get-extension')
 let writeArcConfig = require('./write-arc-config')
+let writeTemplate = require('./write-template')
 let writeCode = require('./write-code')
 
 /**
@@ -13,7 +14,7 @@ let writeCode = require('./write-code')
  * @param {string} name - optional. of the format: hello-world-2020
  */
 module.exports = function code (params, callback) {
-  let { arcStaticAssetProxy, src, type, runtime } = params
+  let { arcStaticAssetProxy, src, type, runtime, prefs } = params
 
   // Immediate bail if source dir already exists
   if (arcStaticAssetProxy || existsSync(src)) {
@@ -31,11 +32,21 @@ module.exports = function code (params, callback) {
         }, callback)
       },
       code (callback) {
-        writeCode({
-          type,
-          runtime,
-          handlerFile
-        }, callback)
+        let templates = prefs && prefs.create && prefs.create.templates
+        let template = templates && templates[type]
+        if (template) {
+          writeTemplate({
+            template,
+            handlerFile
+          }, callback)
+        }
+        else {
+          writeCode({
+            type,
+            runtime,
+            handlerFile
+          }, callback)
+        }
       }
     }, function done (err) {
       if (err) callback(err)
