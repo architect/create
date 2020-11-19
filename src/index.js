@@ -1,4 +1,5 @@
 let { updater } = require('@architect/utils')
+let { sep } = require('path')
 let inventory = require('@architect/inventory')
 let parallel = require('run-parallel')
 let code = require('./lambda')
@@ -77,7 +78,11 @@ module.exports = async function create (params = {}, callback) {
       else {
         let dirs = [ ...new Set(results) ].filter(d => d)
         if (dirs.length) {
-          dirs.forEach(dir => update.done(`Created new project files in ${dir}`))
+          let leading = new RegExp(`^${sep}`)
+          dirs.forEach(d => {
+            let dir = d.replace(process.cwd(), '').replace(leading, '')
+            update.done(`Created new project files in ${dir}${sep}`)
+          })
         }
         if (install && standalone) {
           installArc({ folder, update }, callback)

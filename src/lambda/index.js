@@ -39,7 +39,7 @@ module.exports = function code (params, callback) {
       }
     }, function done (err) {
       if (err) callback(err)
-      else callback(null, `src/${type}`)
+      else callback(null, src)
     })
   }
 }
