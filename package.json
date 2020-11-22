@@ -22,8 +22,8 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@architect/inventory": "~1.1.0-RC.10",
-    "@architect/utils": "~1.5.14",
+    "@architect/inventory": "~1.1.0-RC.14",
+    "@architect/utils": "~2.0.0-RC.1",
     "chalk": "~4.1.0",
     "run-parallel": "~1.1.10"
   },

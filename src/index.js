@@ -1,6 +1,6 @@
 let { updater } = require('@architect/utils')
 let { sep } = require('path')
-let inventory = require('@architect/inventory')
+let _inventory = require('@architect/inventory')
 let parallel = require('run-parallel')
 let code = require('./lambda')
 let assets = require('./static')
@@ -26,7 +26,7 @@ let installArc = require('./_install-arc')
 module.exports = async function create (params = {}, callback) {
   // Although create should be synchronous, callers may await it, so keep it async
 
-  let { options = {}, folder = process.cwd(), install, standalone, update } = params
+  let { options = {}, folder = process.cwd(), install, inventory, standalone, update } = params
 
   let promise
   if (!callback) {
@@ -37,10 +37,11 @@ module.exports = async function create (params = {}, callback) {
     })
   }
 
+  if (!inventory) inventory = await _inventory({ cwd: folder })
   if (!update) update = updater('Create')
 
   try {
-    let { inv } = await inventory({ cwd: folder })
+    let { inv } = inventory
     let prefs = inv._project.preferences
     let { http, events, queues, scheduled, static, streams, ws } = inv
 
