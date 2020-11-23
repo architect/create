@@ -4,11 +4,11 @@ let events = require('./templates/events')
 let queues = require('./templates/queues')
 let ws = require('./templates/ws')
 let scheduled = require('./templates/scheduled')
-let tables = require('./templates/tables')
+let streams = require('./templates/streams')
 
-module.exports = function writeCode ({ fullPath, type, runtime }, callback) {
-  let types = { http, events, queues, ws, scheduled, tables }
+module.exports = function writeCode ({ handlerFile, type, runtime }, callback) {
+  let types = { http, events, queues, ws, scheduled, streams }
   let run = runtime.split(/\d/)[0]
   let body = types[type][run]
-  writeFile(fullPath, body, callback)
+  writeFile(handlerFile, body, callback)
 }

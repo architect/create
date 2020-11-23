@@ -23,7 +23,7 @@ module.exports = function installArc ({ folder, update }, callback) {
   child.on('close', code => {
     if (code === 0) {
       console.log() // Space
-      update.done('Your Architect project is ready, start the sandbox to get going!')
+      update.done('Your Architect project is ready! Get started with: npx arc sandbox')
       callback()
     }
     else {
