@@ -2,6 +2,14 @@
 
 ---
 
+## [1.3.1] 2020-11-30
+
+### Fixed
+
+- Fixed broken `@tables stream` documentation link (which will be added back in later!), thanks @filmaj!
+
+---
+
 ## [1.3.0] 2020-11-23
 
 ### Added
