@@ -25,7 +25,8 @@
     "@architect/inventory": "~1.1.0",
     "@architect/utils": "~2.0.0",
     "chalk": "~4.1.0",
-    "run-parallel": "~1.1.10"
+    "run-parallel": "~1.1.10",
+    "run-series": "~1.1.9"
   },
   "devDependencies": {
     "@architect/eslint-config": "1.0.0",

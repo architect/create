@@ -2,6 +2,19 @@
 
 ---
 
+## [1.3.2] 2020-12-02
+
+### Added
+
+- Add support for custom templates in paths outside the project directory (e.g. `~/tmpl/http.js`, `../../tmpl/http.js`)
+
+
+### Fixed
+
+- Fixed potential for empty files to be written to disk during initialization should a template not be found
+
+---
+
 ## [1.3.1] 2020-11-30
 
 ### Fixed
