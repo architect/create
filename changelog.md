@@ -2,6 +2,14 @@
 
 ---
 
+## [1.3.3] 2021-01-18
+
+### Fixed
+
+- Fixed crash in Windows on invalid regexp, fixes #1052, thanks @kevin4dhd!
+
+---
+
 ## [1.3.2] 2020-12-02
 
 ### Added

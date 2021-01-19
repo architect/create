@@ -80,9 +80,9 @@ module.exports = async function create (params = {}, callback) {
       else {
         let dirs = [ ...new Set(results) ].filter(d => d)
         if (dirs.length) {
-          let leading = new RegExp(`^${sep}`)
           dirs.forEach(d => {
-            let dir = d.replace(process.cwd(), '').replace(leading, '')
+            let dir = d.replace(process.cwd(), '')
+            if (dir.startsWith(sep)) dir = dir.substr(1)
             update.done(`Created new project files in ${dir}${sep}`)
           })
         }
