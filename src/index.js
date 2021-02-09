@@ -43,7 +43,7 @@ module.exports = async function create (params = {}, callback) {
   try {
     let { inv } = inventory
     let prefs = inv._project.preferences
-    let { http, events, queues, scheduled, static, streams, ws } = inv
+    let { http, events, queues, scheduled, static, streams, ws, plugins } = inv
 
     let supported = [ 'node', 'deno', 'ruby', 'python', 'rb', 'py', 'js' ]
     let node = 'nodejs12.x'
@@ -74,6 +74,15 @@ module.exports = async function create (params = {}, callback) {
     if (scheduled)  functions.push(...scheduled.map(binder.scheduled))
     if (ws)         functions.push(...ws.map(binder.ws))
     if (streams)    functions.push(...streams.map(binder.streams))
+    if (Object.keys(plugins).length > 0) {
+      functions.push(...Object.values(plugins).
+        map(pluginModule => pluginModule.pluginFunctions).
+        filter(functionMethod => functionMethod). // ensure plugin exports a `pluginFunctions` method; ignore ones that do not
+        map(pluginFunctions => pluginFunctions(inventory.inv._project.arc, inventory)). // returns an array of new lambdas defined by each plugin
+        flat(). // since we have an array of lambdas _per plugin_, flatten it down to a simple array of lambdas regardless of plugin
+        map(pluginLambda => code.bind({}, { ...pluginLambda, runtime, type: 'plugin' }))
+      )
+    }
 
     parallel(functions, function done (err, results) {
       if (err) callback(err)

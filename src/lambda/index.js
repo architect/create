@@ -14,7 +14,7 @@ let writeCode = require('./write-code')
  * @param {string} name - optional. of the format: hello-world-2020
  */
 module.exports = function code (params, callback) {
-  let { arcStaticAssetProxy, src, type, runtime, prefs } = params
+  let { arcStaticAssetProxy, src, type, runtime, prefs, body } = params
 
   // Immediate bail if source dir already exists
   if (arcStaticAssetProxy || existsSync(src)) {
@@ -38,7 +38,8 @@ module.exports = function code (params, callback) {
           writeCode({
             type,
             runtime,
-            handlerFile
+            handlerFile,
+            body
           }, callback)
         }
       },
