@@ -2,6 +2,15 @@
 
 ---
 
+## [1.4.0] 2021-02-09
+
+### Added
+
+- Added support for `@plugins` pragma
+    - This allows plugin authors to create new Lambdas
+
+---
+
 ## [1.3.3] 2021-01-18
 
 ### Fixed

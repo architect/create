@@ -1,6 +1,6 @@
 {
   "name": "@architect/create",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "description": "Idempotently initialize Architect projects",
   "main": "src/index.js",
   "bin": {
@@ -13,7 +13,7 @@
   "scripts": {
     "test": "npm run lint && npm run coverage",
     "test:unit": "cross-env PORT=6666 tape 'test/unit/**/*-test.js' | tap-spec",
-    "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test:unit",
+    "coverage": "nyc --reporter=lcov --reporter=text npm run test:unit",
     "lint": "eslint . --fix",
     "rc": "npm version prerelease --preid RC"
   },
