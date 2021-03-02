@@ -2,12 +2,11 @@
 
 ---
 
-## [1.4.0] 2021-02-09
+## [1.4.0] 2021-03-02
 
 ### Added
 
-- Added support for `@plugins` pragma
-    - This allows plugin authors to create new Lambdas
+- Added support for `@plugins` pragma, allowing plugin authors to create new Lambda directories in arc projects
 
 ---
 
