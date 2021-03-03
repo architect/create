@@ -44,3 +44,26 @@ test('Should invoke code-writing module for @plugin functions', t => {
     t.equals(codeArg.type, 'plugin', 'New plugin function has a type of plugin passed to code writing module')
   })
 })
+
+test('Should not error if @plugins does not exist in inventory', t => {
+  t.plan(1)
+  let update = {
+    done: () => {}
+  }
+  let inventory = {
+    inv: {
+      _project: {
+        preferences: {},
+        defaultFunctionConfig: { runtime: 'nodejs12' }
+      },
+    }
+  }
+  create({
+    standalone: true,
+    inventory,
+    update
+  }, (err) => {
+    t.notOk(err, 'Did not error')
+  })
+})
+

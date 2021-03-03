@@ -74,7 +74,7 @@ module.exports = async function create (params = {}, callback) {
     if (scheduled)  functions.push(...scheduled.map(binder.scheduled))
     if (ws)         functions.push(...ws.map(binder.ws))
     if (streams)    functions.push(...streams.map(binder.streams))
-    if (Object.keys(plugins).length > 0) {
+    if (plugins) {
       functions.push(...Object.values(plugins).
         map(pluginModule => pluginModule.pluginFunctions).
         filter(functionMethod => functionMethod). // ensure plugin exports a `pluginFunctions` method; ignore ones that do not
