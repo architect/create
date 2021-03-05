@@ -20,16 +20,13 @@ test('Should invoke code-writing module for @plugin functions', t => {
         preferences: {},
         defaultFunctionConfig: { runtime: 'nodejs12' }
       },
-      plugins: {
-        someplugin: {
-          pluginFunctions: function () {
-            return [ {
-              src: 'some/path/to/new/lambda',
-              body: 'molded by it'
-            } ]
-          }
+      plugins: [
+        {
+          src: '/some/path/to/project/src/new/lambda',
+          name: 'new-lambda',
+          body: 'molded by it'
         }
-      }
+      ]
     }
   }
   create({
@@ -39,9 +36,9 @@ test('Should invoke code-writing module for @plugin functions', t => {
   }, (err) => {
     t.notOk(err, 'Did not error')
     let codeArg = args[0]
-    t.equals(codeArg.src, 'some/path/to/new/lambda', 'Path to new plugin function passed to code writing module')
+    t.equals(codeArg.src, '/some/path/to/project/src/new/lambda', 'Path to new plugin function passed to code writing module')
     t.equals(codeArg.body, 'molded by it', 'Body of new plugin function passed to code writing module')
-    t.equals(codeArg.type, 'plugin', 'New plugin function has a type of plugin passed to code writing module')
+    t.equals(codeArg.type, 'plugins', 'New plugin function has a type of plugin passed to code writing module')
   })
 })
 

@@ -61,7 +61,7 @@ module.exports = async function create (params = {}, callback) {
     let functions = []
 
     let binder = {}
-    let lambdae = [ 'http', 'events', 'queues', 'scheduled', 'static', 'streams', 'ws' ]
+    let lambdae = [ 'http', 'events', 'plugins', 'queues', 'scheduled', 'static', 'streams', 'ws' ]
     lambdae.forEach(type => {
       binder[type] = fn => code.bind({}, { ...fn, type, runtime, prefs })
     })
@@ -74,15 +74,7 @@ module.exports = async function create (params = {}, callback) {
     if (scheduled)  functions.push(...scheduled.map(binder.scheduled))
     if (ws)         functions.push(...ws.map(binder.ws))
     if (streams)    functions.push(...streams.map(binder.streams))
-    if (plugins) {
-      functions.push(...Object.values(plugins).
-        map(pluginModule => pluginModule.pluginFunctions).
-        filter(functionMethod => functionMethod). // ensure plugin exports a `pluginFunctions` method; ignore ones that do not
-        map(pluginFunctions => pluginFunctions(inventory.inv._project.arc, inventory)). // returns an array of new lambdas defined by each plugin
-        flat(). // since we have an array of lambdas _per plugin_, flatten it down to a simple array of lambdas regardless of plugin
-        map(pluginLambda => code.bind({}, { ...pluginLambda, runtime, type: 'plugin' }))
-      )
-    }
+    if (plugins)    functions.push(...plugins.map(binder.plugins))
 
     parallel(functions, function done (err, results) {
       if (err) callback(err)
@@ -111,35 +103,5 @@ module.exports = async function create (params = {}, callback) {
 
   return promise
 }
-
-// In order to support nodejs v10
-// Stolen from https://stackoverflow.com/questions/53072385/array-prototype-flat-is-undefined-in-nodejs
-if (!Array.prototype.flat) {
-  Array.prototype.flat = function (maxDepth, currentDepth) {
-    let array = this
-    maxDepth = maxDepth === Infinity
-      ? Number.MAX_SAFE_INTEGER
-      : parseInt(maxDepth, 10) || 1
-    currentDepth = parseInt(currentDepth, 10) || 0
-
-    // It's not an array or it's an empty array, return the object.
-    if (!Array.isArray(array) || !array.length) {
-      return array
-    }
-
-    // If the first element is itself an array and we're not at maxDepth,
-    // flatten it with a recursive call first.
-    // If the first element is not an array, an array with just that element IS the
-    // flattened representation.
-    // **Edge case**: If the first element is an empty element/an "array hole", skip it.
-    // (see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat#Examples)
-    let firstElemFlattened = (Array.isArray(array[0]) && currentDepth < maxDepth)
-      ? array[0].flat(maxDepth, currentDepth + 1)
-      : array[0] === undefined ? [] : [ array[0] ]
-
-    return firstElemFlattened.concat(array.slice(1).flat(maxDepth, currentDepth))
-  }
-}
-
 
 module.exports.bootstrap = bootstrap
