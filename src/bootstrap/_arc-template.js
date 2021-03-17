@@ -1,7 +1,8 @@
 let { join } = require('path')
-let { existsSync, writeFileSync } = require('fs')
+let { writeFileSync } = require('fs')
 
-module.exports = function arcTemplate ({ name, folder, standalone, update, runtime }) {
+module.exports = function arcTemplate (params) {
+  let { name, folder, inventory, standalone, update, runtime } = params
   // Only add the @aws runtime setting into the Arc template if specified
   runtime = runtime ? `runtime ${runtime}\n` : ''
 
@@ -18,22 +19,12 @@ ${runtime}# profile default
   `
 
   let appDotArc =   join(folder, 'app.arc')
-  let dotArc =      join(folder, '.arc')
-  // FIXME add app.arc, arc.toml and arc.yml
-  let arcDotJSON =  join(folder, 'arc.json')
-  let arcDotYAML =  join(folder, 'arc.yaml')
-
-  let initialized = existsSync(appDotArc) ||
-                    existsSync(dotArc) ||
-                    existsSync(arcDotJSON) ||
-                    existsSync(arcDotYAML)
-  if (initialized) {
-    // Do nothing if already initialized
-    if (standalone) {
-      update.done('Existing Architect project manifest found')
-    }
+  let hasManifest = inventory.inv._project.manifest
+  // Do nothing if a manifest already exists
+  if (hasManifest && standalone) {
+    update.done('Existing Architect project manifest found')
   }
-  else {
+  else if (!hasManifest) {
     // This is used further down the line in @arc/arc processes to ensure correctly ordered printing
     process.env.INITIALIZED = true
     writeFileSync(appDotArc, arcFile)

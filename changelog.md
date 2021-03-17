@@ -2,6 +2,14 @@
 
 ---
 
+## [1.3.4] 2021-03-17
+
+### Fixed
+
+- Fixed file creation in projects that use Architect within `package.json`
+
+---
+
 ## [1.3.3] 2021-01-18
 
 ### Fixed

@@ -49,9 +49,9 @@ async function cmd () {
   }
 
   // Bootstrap the project on the filesystem, including new dirs, npm i, etc.
-  let { install } = bootstrap({ options, standalone, update, runtime: opts.runtime })
+  let { install } = bootstrap({ options, inventory, standalone, update, runtime: opts.runtime })
 
-  return create({ options: opts, folder, install, standalone, update })
+  return create({ options: opts, inventory, folder, install, standalone, update })
 }
 
 module.exports = cmd

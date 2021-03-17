@@ -15,7 +15,7 @@ let arcPackage = require('./_arc-package')
  * - Flags Architect for installation
  */
 module.exports = function bootstrap (params = {}) {
-  let { options = [], runtime, standalone = false, update } = params
+  let { options = [], inventory, runtime, standalone = false, update } = params
   if (!update) update = updater('Create')
 
   /**
@@ -37,7 +37,7 @@ module.exports = function bootstrap (params = {}) {
     )
     mkdirSync(folder, { recursive: true })
   }
-  arcTemplate({ name, folder, standalone, update, runtime })
+  arcTemplate({ name, folder, inventory, standalone, update, runtime })
 
   /**
    * Add a package.json to install Arc into (if necessary)
