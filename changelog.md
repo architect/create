@@ -6,7 +6,7 @@
 
 ### Added
 
-- Added support for `@plugins` pragma
+- Added beta support for `@plugins` pragma
   - This allows plugin authors to create new Lambdas
 
 ---
