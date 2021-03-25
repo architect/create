@@ -11,8 +11,9 @@
     "url": "git+https://github.com/architect/create.git"
   },
   "scripts": {
-    "test": "npm run lint && npm run coverage",
+    "test": "npm run lint && npm run test:integration && npm run coverage",
     "test:unit": "cross-env PORT=6666 tape 'test/unit/**/*-test.js' | tap-spec",
+    "test:integration": "cross-env tape 'test/integration/**/*-test.js' | tap-spec",
     "coverage": "nyc --reporter=lcov --reporter=text npm run test:unit",
     "lint": "eslint . --fix",
     "rc": "npm version prerelease --preid RC"
@@ -32,6 +33,7 @@
     "@architect/eslint-config": "1.0.0",
     "cross-env": "~7.0.3",
     "eslint": "^7.14.0",
+    "fs-extra": "~9.1.0",
     "nyc": "~15.1.0",
     "proxyquire": "^2.1.3",
     "tap-spec": "^5.0.0",

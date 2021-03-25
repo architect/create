@@ -4,13 +4,14 @@ module.exports = function getProjectName ({ options = [], update }) {
   // Known options
   let isVerbose = opt => opt === 'verbose' || opt === '--verbose' || opt === '-v'
   let isRuntime = opt => opt === 'runtime' || opt === '--runtime' || opt === '-r'
+  let isNoInstall = opt => opt === 'noinstall' || opt === '--no-install' || opt === '-n'
 
   // Grab runtime value for filtering
   let runtime = options.findIndex(isRuntime) === -1 ? null : options.findIndex(isRuntime) + 1
   // Filter known options from arg list
   let filtered = options.filter((opt, i) => {
     if (i === runtime) return false
-    if (isVerbose(opt) || isRuntime(opt)) return false
+    if (isVerbose(opt) || isRuntime(opt) || isNoInstall(opt)) return false
     return true
   })
   let passedName = filtered[filtered.length - 1] || ''
