@@ -23,12 +23,11 @@ let update = updater('Create')
 let isRuntime = opt => opt === 'runtime' || opt === '--runtime' || opt === '-r'
 let isVerbose = opt => opt === 'verbose' || opt === '--verbose' || opt === '-v'
 let isStatic =  opt => opt === 'static' || opt === '--static' || opt === '-s'
+let noInstall = opt => opt === 'noinstall' || opt === '--no-install' || opt === '-n'
 
 // eslint-disable-next-line
-async function cmd () {
-  // Used by bootstrap to differentiate between arc create and preflight bootstrap calls
-  let standalone = true
-  let options = process.argv
+async function cmd (options) {
+  options = options || process.argv // passed-in options only used for testing
 
   // Get the folder name so we know where to inventory
   let { folder } = getName({ options, update })
@@ -45,11 +44,17 @@ async function cmd () {
   // Populate basic project files
   let opts = {
     verbose: options.some(isVerbose),
+    noInstall: options.some(noInstall),
     runtime: options.some(isRuntime) ? options.slice(options.findIndex(isRuntime))[1] : false,
   }
+  // Used by bootstrap to differentiate between arc create and preflight bootstrap calls
+  // (for testing we wanna be able to override it so we dont npm install all the things during integration tests)
+  let standalone = opts.noInstall ? false : true
 
-  // Bootstrap the project on the filesystem, including new dirs, npm i, etc.
+  // Bootstrap the project on the filesystem, including new dirs, npm i, app.arc manifest, etc.
   let { install } = bootstrap({ options, inventory, standalone, update, runtime: opts.runtime })
+  // re-seed the inventory since we may now have a new manifest due to bootstrap creating a new project
+  inventory = await _inventory({ cwd: folder })
 
   return create({ options: opts, inventory, folder, install, standalone, update })
 }
