@@ -19,12 +19,12 @@
     "rc": "npm version prerelease --preid RC"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@architect/inventory": "~2.0.2",
-    "@architect/utils": "~3.0.1",
+    "@architect/inventory": "~2.0.4",
+    "@architect/utils": "~3.0.2",
     "chalk": "~4.1.1",
     "run-parallel": "~1.2.0",
     "run-series": "~1.1.9"
