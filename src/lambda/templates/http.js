@@ -117,4 +117,17 @@ def handler(req, context):
     'body': """${html('Python', 'py')}"""
   }`
 
-module.exports = { nodejs, deno, ruby, python }
+let php = `// ${learn}
+function handler($req, $context)
+{
+  return [
+    'statusCode' => 200,
+    'headers' => [
+      'cache-control' => 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
+      'content-type' => 'text/html; charset=utf8'
+    ],
+    'body' => "${html('PHP', 'php')}"
+  ]
+}`
+
+module.exports = { nodejs, deno, ruby, python, php }

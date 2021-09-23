@@ -45,16 +45,17 @@ module.exports = async function create (params = {}, callback) {
     let prefs = inv._project.preferences
     let { http, events, queues, scheduled, static, streams, ws, plugins } = inv
 
-    let supported = [ 'node', 'deno', 'ruby', 'python', 'rb', 'py', 'js' ]
+    let supported = [ 'node', 'deno', 'ruby', 'python', 'php', 'rb', 'py', 'js', 'php' ]
     let node = 'nodejs12.x'
     let deno = 'deno'
     let ruby = 'ruby2.7'
     let python = 'python3.8'
+    let php = 'php'
 
     let runtime = inv._project.defaultFunctionConfig.runtime
     let override = options.runtime
     if (supported.includes(override)) {
-      let runtimes = { node, ruby, python, rb: ruby, py: python, js: node, deno }
+      let runtimes = { node, ruby, python, php, rb: ruby, py: python, js: node, deno, php: php }
       runtime = runtimes[override]
     }
 

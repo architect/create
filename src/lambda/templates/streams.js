@@ -23,4 +23,11 @@ def handler(event, context):
   print(event)
   return True`
 
-module.exports = { nodejs, deno, ruby, python }
+let php = `// ${learn}
+function handler($event, $context)
+{
+  print_r($event);
+  return true;
+}`
+
+module.exports = { nodejs, deno, ruby, python, php }

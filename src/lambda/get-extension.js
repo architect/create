@@ -8,5 +8,6 @@ module.exports = function getExtension (runtime) {
   if (ext('deno')) return 'ts'
   if (ext('python')) return 'py'
   if (ext('ruby')) return 'rb'
+  if (ext('php')) return 'php'
   throw Error('invalid runtime')
 }
