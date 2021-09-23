@@ -117,7 +117,8 @@ def handler(req, context):
     'body': """${html('Python', 'py')}"""
   }`
 
-let php = `// ${learn}
+let php = `<?php
+// ${learn}
 function handler($req, $context)
 {
   return [
@@ -126,8 +127,8 @@ function handler($req, $context)
       'cache-control' => 'no-cache, no-store, must-revalidate, max-age=0, s-maxage=0',
       'content-type' => 'text/html; charset=utf8'
     ],
-    'body' => "${html('PHP', 'php')}"
-  ]
+    'body' => <<<HTML${html('PHP', 'php')}HTML
+  ];
 }`
 
 module.exports = { nodejs, deno, ruby, python, php }

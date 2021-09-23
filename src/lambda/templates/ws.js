@@ -23,7 +23,8 @@ def handler(event, context):
   print(event)
   return {statusCode: 200}`
 
-let php = `// ${learn}
+let php = `<?php
+// ${learn}
 function handler($event, $context)
 {
   print_r($event);
