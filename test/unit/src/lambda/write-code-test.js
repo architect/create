@@ -1,3 +1,4 @@
+let { join } = require('path')
 let proxyquire = require('proxyquire')
 let destination
 let written
@@ -8,7 +9,8 @@ let fsStub = {
     cb()
   }
 }
-let writeCode = proxyquire('../../../../src/lambda/write-code', {
+let sut = join(process.cwd(), 'src', 'lambda', 'write-code')
+let writeCode = proxyquire(sut, {
   fs: fsStub
 })
 let test = require('tape')
@@ -22,7 +24,7 @@ test('Should write body if provided via argument', t => {
   t.plan(2)
   writeCode({
     handlerFile: 'src/lambda/index.js',
-    runtime: 'nodejs12',
+    runtime: 'nodejs14.x',
     body: 'this is bat country'
   }, () => {})
   t.equal(destination, 'src/lambda/index.js', 'Correct file location to be written to')
@@ -33,7 +35,7 @@ test('Should write template body if no body provided via argument', t => {
   t.plan(2)
   writeCode({
     handlerFile: 'src/http/get-catchall/index.js',
-    runtime: 'nodejs12',
+    runtime: 'nodejs14.x',
     type: 'http'
   }, () => {})
   t.equal(destination, 'src/http/get-catchall/index.js', 'Correct file location to be written to')

@@ -1,6 +1,6 @@
 let learn = 'learn more about DynamoDB table stream functions here: https://arc.codes/primitives/tables#stream'
 
-let nodejs = `// ${learn}
+let node = `// ${learn}
 exports.handler = async function table (event) {
   console.log(JSON.stringify(event, null, 2))
   return
@@ -23,4 +23,4 @@ def handler(event, context):
   print(event)
   return True`
 
-module.exports = { nodejs, deno, ruby, python }
+module.exports = { node, deno, ruby, python }

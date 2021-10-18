@@ -2,6 +2,29 @@
 
 ---
 
+## [3.0.0] 2021-10-17
+
+### Added
+
+- Added ability to specify a project name with `-n` or `--name` parameter
+- Added support for runtime shorhands (e.g. `node` will now pin new created functions to the latest stable AWS Lambda Node.js version)
+- Added real file paths to boilerplate HTTP functions
+
+### Changed
+
+- Breaking change: updated internal module API to accept a proper options object
+- Breaking change: `-n` flag now optionally specifies a project name, and is not a shorcut for the `--no-install` param
+- Breaking change: removed export of internal `bootstrap` method
+- Significantly tidied up boilerplate `@http` functions
+- Removed setting deprecated `INITIALIZED` env var when creating a new project
+
+
+### Fixed
+
+- When run from `@architect/architect`, Create no longer attempts to install Architect
+
+---
+
 ## [2.0.2] 2021-10-12
 
 ### Changed

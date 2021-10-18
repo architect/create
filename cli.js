@@ -1,12 +1,7 @@
 #!/usr/bin/env node
-let create = require('.')
-let banner = require('./src/bootstrap/_banner')
-let bootstrap = require('./src/bootstrap')
-let getName = require('./src/bootstrap/_get-name')
-let { version } = require('./package.json')
 let { updater } = require('@architect/utils')
-let _inventory = require('@architect/inventory')
-let simpleStatic = require('./src/simple-static')
+let create = require('.')
+let minimist = require('minimist')
 let update = updater('Create')
 
 /**
@@ -14,49 +9,40 @@ let update = updater('Create')
  *
  * Idempotently initializes new Architect projects
  *
- * opts
- * -s|--static|static ........... init a static app
- * -r|--runtime|runtime ......... set up with one of node, deno, python, or ruby
- * -v|--verbose|verbose ......... prints all output to console
+ * -n|--name ............ specify an app name
+ * --noinstall .......... do not intall any Architect dependencies
+ * -s|--static .......... init a static app
+ * -r|--runtime ......... set up with one of node, deno, python, or ruby
+ * -v|--verbose ......... prints all output to console
  */
-
-let isRuntime = opt => opt === 'runtime' || opt === '--runtime' || opt === '-r'
-let isVerbose = opt => opt === 'verbose' || opt === '--verbose' || opt === '-v'
-let isStatic =  opt => opt === 'static' || opt === '--static' || opt === '-s'
-let noInstall = opt => opt === 'noinstall' || opt === '--no-install' || opt === '-n'
-
-// eslint-disable-next-line
-async function cmd (options) {
-  options = options || process.argv // passed-in options only used for testing
-
-  // Get the folder name so we know where to inventory
-  let { folder } = getName({ options, update })
-  let inventory = await _inventory({ cwd: folder })
-
-  // Print banner
-  banner({ inventory, version })
-
-  if (options.some(isStatic)) {
-    // just bail early here ... I don't use understand the code below so just stubbing in
-    return simpleStatic()
+async function cmd (opts = {}) {
+  let alias = {
+    name: [ 'n' ],
+    noInstall: [ 'noinstall' ],
+    runtime: [ 'r' ],
+    static: [ 's' ],
+    verbose: [ 'v' ],
   }
+  let string = [ 'name', 'runtime' ]
+  let args = minimist(process.argv.slice(2), { alias, string })
+  let { _ } = args
+  if ([ 'create', '@architect' ].includes(_[0])) _.splice(0, 1)
 
-  // Populate basic project files
-  let opts = {
-    verbose: options.some(isVerbose),
-    noInstall: options.some(noInstall),
-    runtime: options.some(isRuntime) ? options.slice(options.findIndex(isRuntime))[1] : false,
+  let install = opts.install
+  if (typeof args.install === 'boolean') install = args.install
+  if (typeof args.noInstall === 'boolean') install = !args.noInstall
+
+  let params = {
+    name: opts.name || args.name,
+    folder: opts.folder || _[0],
+    install,
+    runtime: opts.runtime || args.runtime,
+    standalone: opts.standalone,
+    static: opts.static || args.static,
+    update,
+    verbose: opts.verbose || args.verbose,
   }
-  // Used by bootstrap to differentiate between arc create and preflight bootstrap calls
-  // (for testing we wanna be able to override it so we dont npm install all the things during integration tests)
-  let standalone = opts.noInstall ? false : true
-
-  // Bootstrap the project on the filesystem, including new dirs, npm i, app.arc manifest, etc.
-  let { install } = bootstrap({ options, inventory, standalone, update, runtime: opts.runtime })
-  // re-seed the inventory since we may now have a new manifest due to bootstrap creating a new project
-  inventory = await _inventory({ cwd: folder })
-
-  return create({ options: opts, inventory, folder, install, standalone, update })
+  return create(params)
 }
 
 module.exports = cmd
@@ -65,7 +51,14 @@ module.exports = cmd
 if (require.main === module) {
   (async function () {
     try {
-      await cmd()
+      // If invoked by npm init, then we probably do need to `install`
+      let options = {
+        install: true,
+        standalone: true,
+      }
+      // If invoked by Architect, assume installation is unncessary
+      if (process.env.ARC_ENV) options.install = false
+      await cmd(options)
     }
     catch (err) {
       update.error(err)

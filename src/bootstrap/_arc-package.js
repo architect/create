@@ -7,25 +7,26 @@ let { existsSync, readFileSync, writeFileSync } = require('fs')
  * - `true`: install @architect/architect as the final step
  * - `false`: do not install @architect/architect
  */
-module.exports = function arcPackage ({ options, name, folder }) {
+module.exports = function arcPackage ({ name, folder }) {
+  let args = process.argv
   // Don't install if invoked from a globally installed @arc/arc
-  let isGlobal = (options[0] && options[1] && options[2] &&
-                  options[0].includes('node') &&  // Node invoke path may vary
-                  options[1].includes('arc')) &&  // .. same deal with the Arc path
-                  options[2] === 'create' ||      // == 'arc create' via global install
-                  options[2] === 'init'           // Backwards compat
+  let isGlobal = (args[0] && args[1] && args[2] &&
+                  args[0].includes('node') &&  // Node invoke path may vary
+                  args[1].includes('arc')) &&  // .. same deal with the Arc path
+                  (args[2] === 'create' ||     // == 'arc create' via global install
+                   args[2] === 'init')         // Backwards compat
   if (!isGlobal) {
-    let package = {
-      name,
-      version: '0.0.0',
-      description: 'A fresh new Architect project!',
-      scripts: {
-        start: 'npx sandbox'
-      },
-      devDependencies: {}
-    }
     let packageFile = join(folder, 'package.json')
     if (!existsSync(packageFile)) {
+      let package = {
+        name,
+        version: '0.0.0',
+        description: 'A fresh new Architect project!',
+        scripts: {
+          start: 'npx sandbox'
+        },
+        devDependencies: {}
+      }
       writeFileSync(packageFile, JSON.stringify(package, null, 2))
       return true
     }
