@@ -1,27 +1,27 @@
 let { existsSync, mkdirSync } = require('fs')
 let { join } = require('path')
 let series = require('run-series')
-let getExtension = require('./get-extension')
 let writeArcConfig = require('./write-arc-config')
 let writeTemplate = require('./write-template')
 let writeCode = require('./write-code')
 
 /**
- * @param {string} type - required. one of: http, event, queue, table, ws
+ * @param {boolean} arcStaticAssetProxy - optional. identifies ASAP
  * @param {string} runtime - required. one of:  node, deno, ruby, python
- * @param {string} method - optional. one of: get, post, put, delete, patch
- * @param {string} path - optional. of the format: /foo/:bar/baz
- * @param {string} name - optional. of the format: hello-world-2020
+ * @param {string} body - optional. custom template body
+ * @param {string} type - optional. CLI/module-specified runtime
+ * @param {string} type - required. one of: http, event, queue, table, ws
+ * @param {object} prefs - optional. inventory preferences
  */
 module.exports = function code (params, callback) {
-  let { arcStaticAssetProxy, src, type, runtime, prefs, body } = params
+  let { config, src, handlerFile, body, type, prefs } = params
 
   // Immediate bail if source dir already exists
-  if (arcStaticAssetProxy || existsSync(src)) {
+  if (params.arcStaticAssetProxy || existsSync(src)) {
     callback()
   }
   else {
-    let handlerFile = join(src, `index.${getExtension(runtime)}`)
+    let runtime = params.runtime || config.runtime
     mkdirSync(src, { recursive: true })
 
     series([

@@ -1,8 +1,5 @@
-let path = require('path')
 let { existsSync, mkdirSync } = require('fs')
-let { updater } = require('@architect/utils')
 
-let getName = require('./_get-name')
 let arcTemplate = require('./_arc-template')
 let arcPackage = require('./_arc-package')
 
@@ -14,17 +11,8 @@ let arcPackage = require('./_arc-package')
  * - Generates project manifest (app.arc)
  * - Flags Architect for installation
  */
-module.exports = function bootstrap (params = {}) {
-  let { options = [], inventory, runtime, standalone = false, update } = params
-  if (!update) update = updater('Create')
-
-  /**
-   * First, figure out where we're working, and what our project name is
-   */
-  let { name, folder } = getName({ options, update })
-  // Get the name passed in, or use the current dir name
-  let currentDirName = process.cwd().split(path.sep).reverse().shift()
-  name = name || currentDirName
+module.exports = function bootstrap (params) {
+  let { name, folder, standalone, update } = params
 
   /**
    * Next, create a dir and/or app.arc file, if necessary
@@ -37,14 +25,14 @@ module.exports = function bootstrap (params = {}) {
     )
     mkdirSync(folder, { recursive: true })
   }
-  arcTemplate({ name, folder, inventory, standalone, update, runtime })
+  arcTemplate(params)
 
   /**
    * Add a package.json to install Arc into (if necessary)
    */
   let install = false
   if (standalone) {
-    install = arcPackage({ options, name, folder })
+    install = arcPackage({ name, folder })
   }
 
   /**

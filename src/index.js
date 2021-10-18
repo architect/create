@@ -1,10 +1,15 @@
-let { updater } = require('@architect/utils')
 let { sep } = require('path')
+let { updater } = require('@architect/utils')
 let _inventory = require('@architect/inventory')
+let { version } = require('../package.json')
+let banner = require('./_banner')
+let { aliases, runtimes, runtimeList } = require('lambda-runtimes')
+let getName = require('./_get-name')
 let parallel = require('run-parallel')
 let code = require('./lambda')
-let assets = require('./static')
+let _static = require('./static')
 let bootstrap = require('./bootstrap')
+let simpleStatic = require('./simple-static')
 let installArc = require('./_install-arc')
 
 /**
@@ -22,11 +27,9 @@ let installArc = require('./_install-arc')
  * @param {Function} callback - a node style errback
  * @returns {Promise} - (if no callback is supplied)
  */
-// eslint-disable-next-line
 module.exports = async function create (params = {}, callback) {
-  // Although create should be synchronous, callers may await it, so keep it async
-
-  let { options = {}, folder = process.cwd(), install, inventory, standalone, update } = params
+  let { install, inventory, runtime, standalone, update } = params
+  if (!update) update = updater('Create')
 
   let promise
   if (!callback) {
@@ -37,46 +40,62 @@ module.exports = async function create (params = {}, callback) {
     })
   }
 
-  if (!inventory) inventory = await _inventory({ cwd: folder })
-  if (!update) update = updater('Create')
+  // Validate the runtime
+  if (runtime && (runtime !== 'deno' &&
+                  !runtimes[runtime] &&
+                  !runtimeList.includes(runtime)) &&
+                  !aliases[runtime]) {
+    update.error(`Invalid runtime specified: ${runtime}`)
+    process.exit(1)
+  }
+  if (runtime && aliases[runtime]) {
+    runtime = aliases[runtime]
+  }
+
+  // Get the folder name so we know where to inventory
+  if (params.folder === '/') {
+    update.error('Please specify a valid project name or path')
+    process.exit(1)
+  }
+  let { name, folder } = getName(params)
+  if (!inventory) params.inventory = await _inventory({ cwd: folder })
+
+  if (standalone) {
+    // Print banner
+    banner({ inventory, version })
+  }
+
+  // TODO [DEPRECATE]
+  if (params.static) {
+    return simpleStatic()
+  }
+
+  // Bootstrap the project on the filesystem, including new dirs, npm i, app.arc manifest, etc.
+  bootstrap({ ...params, name, folder })
+
+  // Re-seed the inventory since we may now have a new manifest due to bootstrap creating a new project
+  inventory = await _inventory({ cwd: folder })
 
   try {
     let { inv } = inventory
     let prefs = inv._project.preferences
-    let { http, events, queues, scheduled, static, streams, ws, plugins } = inv
 
-    let supported = [ 'node', 'deno', 'ruby', 'python', 'rb', 'py', 'js' ]
-    let node = 'nodejs12.x'
-    let deno = 'deno'
-    let ruby = 'ruby2.7'
-    let python = 'python3.8'
-
-    let runtime = inv._project.defaultFunctionConfig.runtime
-    let override = options.runtime
-    if (supported.includes(override)) {
-      let runtimes = { node, ruby, python, rb: ruby, py: python, js: node, deno }
-      runtime = runtimes[override]
-    }
-
-    let functions = []
-
-    let binder = {}
-    let lambdae = [ 'http', 'events', 'plugins', 'queues', 'scheduled', 'static', 'streams', 'ws' ]
-    lambdae.forEach(type => {
-      binder[type] = fn => code.bind({}, { ...fn, type, runtime, prefs })
+    // These are the boilerplate-enabled pragmas
+    let pragmas = [ 'http', 'events', 'plugins', 'queues', 'scheduled', 'static', 'streams', 'ws' ]
+    let templates = []
+    pragmas.forEach(type => {
+      if (!inv[type]) return
+      if (type === 'static') {
+        templates.push(_static.bind({}, { folder, inv }))
+      }
+      else {
+        templates.push(
+          ...inv[type].map(item => code.bind({}, { ...item, runtime, type, prefs }))
+        )
+      }
     })
 
-    // Generate minimal static assets and Lambdae
-    if (static)     functions.push(assets.bind({}, { folder, inv }))
-    if (http)       functions.push(...http.map(binder.http))
-    if (events)     functions.push(...events.map(binder.events))
-    if (queues)     functions.push(...queues.map(binder.queues))
-    if (scheduled)  functions.push(...scheduled.map(binder.scheduled))
-    if (ws)         functions.push(...ws.map(binder.ws))
-    if (streams)    functions.push(...streams.map(binder.streams))
-    if (plugins)    functions.push(...plugins.map(binder.plugins))
-
-    parallel(functions, function done (err, results) {
+    parallel(templates, function done (err, results) {
       if (err) callback(err)
       else {
         let dirs = [ ...new Set(results) ].filter(d => d)
@@ -103,5 +122,3 @@ module.exports = async function create (params = {}, callback) {
 
   return promise
 }
-
-module.exports.bootstrap = bootstrap

@@ -1,6 +1,6 @@
 let learn = 'learn more about WebSocket functions here: https://arc.codes/primitives/ws'
 
-let nodejs = `// ${learn}
+let node = `// ${learn}
 exports.handler = async function ws (req) {
   console.log(JSON.stringify(req, null, 2))
   return {statusCode: 200}
@@ -23,4 +23,4 @@ def handler(event, context):
   print(event)
   return {statusCode: 200}`
 
-module.exports = { nodejs, deno, ruby, python }
+module.exports = { node, deno, ruby, python }

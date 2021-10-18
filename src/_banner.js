@@ -9,7 +9,7 @@ module.exports = function printBanner ({ version = '' }) {
 
   let ver = `Architect Create ${version}`
   // Try to use the Arc version instead of create
-  let arcPackage = join(__dirname, '..', '..', '..', '..', '..', 'package.json')
+  let arcPackage = join(__dirname, '..', '..', '..', '..', 'package.json')
   if (existsSync(arcPackage)) {
     let pkg = JSON.parse(readFileSync(arcPackage).toString())
     ver = `Architect ${pkg.version}`

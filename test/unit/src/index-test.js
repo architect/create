@@ -4,21 +4,25 @@ let codeStub = (params, cb) => {
   args.push(params)
   cb()
 }
+let inv
+let invStub = () => inv
 let create = proxyquire('../../../src', {
-  './lambda': codeStub
+  './lambda': codeStub,
+  '@architect/inventory': invStub,
+  './bootstrap': () => {},
 })
 let test = require('tape')
+let update = {
+  done: () => {}
+}
 
 test('Should invoke code-writing module for @plugin functions', t => {
   t.plan(4)
-  let update = {
-    done: () => {}
-  }
-  let inventory = {
+  inv = {
     inv: {
       _project: {
         preferences: {},
-        defaultFunctionConfig: { runtime: 'nodejs12' }
+        defaultFunctionConfig: { runtime: 'nodejs14.x' }
       },
       plugins: [
         {
@@ -31,7 +35,6 @@ test('Should invoke code-writing module for @plugin functions', t => {
   }
   create({
     standalone: true,
-    inventory,
     update
   }, (err) => {
     t.notOk(err, 'Did not error')
@@ -44,23 +47,18 @@ test('Should invoke code-writing module for @plugin functions', t => {
 
 test('Should not error if @plugins does not exist in inventory', t => {
   t.plan(1)
-  let update = {
-    done: () => {}
-  }
-  let inventory = {
+  inv = {
     inv: {
       _project: {
         preferences: {},
-        defaultFunctionConfig: { runtime: 'nodejs12' }
+        defaultFunctionConfig: { runtime: 'nodejs14.x' }
       },
     }
   }
   create({
     standalone: true,
-    inventory,
     update
   }, (err) => {
     t.notOk(err, 'Did not error')
   })
 })
-
