@@ -1,5 +1,6 @@
 let test = require('tape')
 let { join, sep } = require('path')
+let os = require('os')
 let cwd = process.cwd()
 let sut = join(cwd, 'src', '_get-name')
 let getName = require(sut)
@@ -58,8 +59,9 @@ test('Folder specified', t => {
 
   folder = s`/foo`
   result = getName({ folder })
+  let root = os.platform == 'win32' ? process.cwd().split(sep)[0] : sep
   t.equal(result.name, 'foo', 'Got default name of current directory')
-  t.equal(result.folder, join(sep, 'foo'), `Got specified folder: ${folder}`)
+  t.equal(result.folder, join(root, 'foo'), `Got specified folder: ${folder}`)
 
   folder = s`./`
   result = getName({ folder })
