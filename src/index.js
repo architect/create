@@ -1,15 +1,15 @@
 let { sep } = require('path')
 let { updater } = require('@architect/utils')
-let _inventory = require('@architect/inventory')
 let { version } = require('../package.json')
 let banner = require('./_banner')
 let { aliases, runtimes, runtimeList } = require('lambda-runtimes')
 let getName = require('./_get-name')
-let parallel = require('run-parallel')
-let code = require('./lambda')
-let _static = require('./static')
 let bootstrap = require('./bootstrap')
 let simpleStatic = require('./simple-static')
+
+let writeConfigs = require('./write-configs')
+let writeFunctions = require('./write-functions')
+let writeStatic = require('./write-static')
 let installArc = require('./_install-arc')
 
 /**
@@ -17,11 +17,10 @@ let installArc = require('./_install-arc')
  *   Assumes an project is already bootstrapped
  *
  * Rules:
- * - Go fast: create an entire project in one shot in parallel
  * - Create dep-free functions
  * - Min code possible
  * - Only one comment at the top of the file
- * - Add `.arc-config` by default
+ * - Add `config.arc` only if runtime configuration deems it necessary
  *
  * @param {Object} params - Object of params
  * @param {Function} callback - a node style errback
@@ -30,6 +29,16 @@ let installArc = require('./_install-arc')
 module.exports = async function create (params = {}, callback) {
   let { install, inventory, runtime, standalone, update } = params
   if (!update) update = updater('Create')
+
+  let { node } = process.versions
+  let nodeVer = Number(node.split('.')[0])
+  if (nodeVer < 14) {
+    update.error('Sorry, Architect Create requires Node 14 and above')
+    process.exit(1)
+  }
+  // TODO: This blows up 12 if required in global; move this back after 12 is EOL
+  // eslint-disable-next-line
+  let _inventory = require('@architect/inventory')
 
   let promise
   if (!callback) {
@@ -48,21 +57,16 @@ module.exports = async function create (params = {}, callback) {
     update.error(`Invalid runtime specified: ${runtime}`)
     process.exit(1)
   }
-  if (runtime && aliases[runtime]) {
-    runtime = aliases[runtime]
-  }
 
   // Get the folder name so we know where to inventory
   if (params.folder === '/') {
     update.error('Please specify a valid project name or path')
     process.exit(1)
   }
-  let { name, folder } = getName(params)
-  if (!inventory) params.inventory = await _inventory({ cwd: folder })
 
   if (standalone) {
     // Print banner
-    banner({ inventory, version })
+    banner(version)
   }
 
   // TODO [DEPRECATE]
@@ -70,51 +74,47 @@ module.exports = async function create (params = {}, callback) {
     return simpleStatic()
   }
 
-  // Bootstrap the project on the filesystem, including new dirs, npm i, app.arc manifest, etc.
+  // Establish the project name and intended folder
+  let { name, folder } = getName(params)
+
+  // Get Inventory to determine whether we need to bootstrap a manifest
+  if (!inventory) {
+    params.inventory = await _inventory({ cwd: folder })
+  }
+
+  // Bootstrap the project on the filesystem, including new dirs, app.arc manifest, etc.
   bootstrap({ ...params, name, folder })
 
-  // Re-seed the inventory since we may now have a new manifest due to bootstrap creating a new project
-  inventory = await _inventory({ cwd: folder })
-
   try {
-    let { inv } = inventory
-    let prefs = inv._project.preferences
-
     // These are the boilerplate-enabled pragmas
     let pragmas = [ 'http', 'events', 'plugins', 'queues', 'scheduled', 'static', 'streams', 'ws' ]
-    let templates = []
-    pragmas.forEach(type => {
-      if (!inv[type]) return
-      if (type === 'static') {
-        templates.push(_static.bind({}, { folder, inv }))
-      }
-      else {
-        templates.push(
-          ...inv[type].map(item => code.bind({}, { ...item, runtime, type, prefs }))
-        )
-      }
-    })
 
-    parallel(templates, function done (err, results) {
-      if (err) callback(err)
-      else {
-        let dirs = [ ...new Set(results) ].filter(d => d)
-        if (dirs.length) {
-          dirs.forEach(d => {
-            let dir = d.replace(process.cwd(), '')
-            if (dir.startsWith(sep)) dir = dir.substr(1)
-            update.done(`Created new project files in ${dir}${sep}`)
-          })
-        }
-        if (install && standalone) {
-          installArc({ folder, update }, callback)
-        }
-        else {
-          if (standalone) update.done('Done!')
-          callback()
-        }
-      }
-    })
+    // Re-seed the inventory since we may now have a new manifest
+    inventory = await _inventory({ cwd: folder })
+
+    // Create dirs (and necessary config.arc files) that do not yet exist
+    let dirs = writeConfigs({ ...params, pragmas, inventory })
+
+    if (dirs.length) {
+      // One final inventory run now that we have function config files
+      inventory = await _inventory({ cwd: folder })
+
+      writeFunctions({ ...params, dirs, inventory })
+      writeStatic({ folder, inventory })
+
+      dirs.forEach(d => {
+        let dir = d.src.replace(process.cwd(), '')
+        if (dir.startsWith(sep)) dir = dir.substr(1)
+        update.done(`Created new project files in ${dir}${sep}`)
+      })
+    }
+    if (install && standalone) {
+      installArc({ folder, update }, callback)
+    }
+    else {
+      if (standalone) update.done('Done!')
+      callback()
+    }
   }
   catch (err) {
     callback(err)

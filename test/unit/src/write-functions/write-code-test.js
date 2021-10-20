@@ -3,13 +3,12 @@ let proxyquire = require('proxyquire')
 let destination
 let written
 let fsStub = {
-  writeFile: (dest, data, cb) => {
+  writeFileSync: (dest, data) => {
     destination = dest
     written = data
-    cb()
   }
 }
-let sut = join(process.cwd(), 'src', 'lambda', 'write-code')
+let sut = join(process.cwd(), 'src', 'write-functions', 'write-code')
 let writeCode = proxyquire(sut, {
   fs: fsStub
 })
@@ -36,7 +35,7 @@ test('Should write template body if no body provided via argument', t => {
   writeCode({
     handlerFile: 'src/http/get-catchall/index.js',
     runtime: 'nodejs14.x',
-    type: 'http'
+    pragma: 'http'
   }, () => {})
   t.equal(destination, 'src/http/get-catchall/index.js', 'Correct file location to be written to')
   t.match(written, /async function http/, 'Correct argument-provided content written')
