@@ -1,5 +1,4 @@
-let parallel = require('run-parallel')
-let { existsSync, mkdirSync, writeFile } = require('fs')
+let { existsSync, mkdirSync, writeFileSync } = require('fs')
 let { join } = require('path')
 
 let html = require('./templates/html')
@@ -12,21 +11,18 @@ let mjs = require('./templates/mjs')
  * - {public|arc.static.folder}/index.css
  * - {public|arc.static.folder}/index.js
  */
-module.exports = function assets ({ folder, inv }, callback) {
+module.exports = function assets (params) {
+  let { folder, inventory } = params
+  let { inv } = inventory
   // Only create a static asset folder if no root handler is defined, and no folder already exists
   let asap = inv._project.rootHandler === 'arcStaticAssetProxy'
   let staticFolder = inv.static.folder && join(folder, inv.static.folder)
   if (asap && (staticFolder && !existsSync(staticFolder))) {
     mkdirSync(staticFolder, { recursive: true })
-    parallel([
-      writeFile.bind({}, join(staticFolder, 'index.html'), html),
-      writeFile.bind({}, join(staticFolder, 'index.css'), css),
-      writeFile.bind({}, join(staticFolder, 'index.js'), mjs),
-    ],
-    function done (err) {
-      if (err) callback(err)
-      else callback(null, `${staticFolder}/`)
-    })
+    writeFileSync(join(staticFolder, 'index.html'), html)
+    writeFileSync(join(staticFolder, 'index.css'), css)
+    writeFileSync(join(staticFolder, 'index.js'), mjs)
+    return `${staticFolder}/`
   }
-  else callback()
+  return
 }

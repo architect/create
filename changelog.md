@@ -10,12 +10,14 @@
 - Added support for runtime shorhands (e.g. `node` will now pin new created functions to the latest stable AWS Lambda Node.js version)
 - Added real file paths to boilerplate HTTP functions
 
+
 ### Changed
 
 - Breaking change: updated internal module API to accept a proper options object
 - Breaking change: `-n` flag now optionally specifies a project name, and is not a shorcut for the `--no-install` param
 - Breaking change: removed export of internal `bootstrap` method
 - Significantly tidied up boilerplate `@http` functions
+- Create now only write config files (`/path/to/function/config.arc`) if necessary
 - Removed setting deprecated `INITIALIZED` env var when creating a new project
 
 

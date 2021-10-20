@@ -3,7 +3,7 @@ let { existsSync, readFileSync } = require('fs')
 let { join } = require('path')
 let { chars } = require('@architect/utils')
 
-module.exports = function printBanner ({ version = '' }) {
+module.exports = function printBanner (version = '') {
   // Boilerplate
   let log = (label, value) => console.log(chalk.grey(`${label.padStart(12)} ${chars.buzz}`), chalk.cyan(value))
 
