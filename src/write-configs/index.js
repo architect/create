@@ -11,7 +11,7 @@ module.exports = function writeArcConfigs (params) {
 
   // Figure out whether we have something valid to write to disk:
   // An unsupported Create runtime is specified, and project has no default runtime to fall back to
-  let badCreateRuntime = createRuntime && !supported.includes(createRuntime) && !projectRuntime
+  let badCreateRuntime = createRuntime && !supported.includes(createRuntime)
   // Project has an unsupported default runtime, and no Create runtime is specified
   let badProjectRuntime = projectRuntime && !supported.includes(projectRuntime) && !createRuntime
   let skip = badCreateRuntime || badProjectRuntime
@@ -41,7 +41,7 @@ module.exports = function writeArcConfigs (params) {
           let projectAndCreateDiffer = projectRuntime && createRuntime && (createRuntime !== projectRuntime)
 
           if (createDiffers || projectAndCreateDiffer) {
-            let runtime = params.runtime || config.runtimeAlias || config.runtime
+            let runtime = createRuntime || config.runtimeAlias || config.runtime
             let configPath = join(src, 'config.arc')
             let arcConfig = `@aws
 runtime ${runtime}
