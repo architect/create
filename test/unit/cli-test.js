@@ -17,7 +17,7 @@ test('CLI flags and params', async t => {
   args('')
   await cli()
   Object.entries(createParams).forEach(([ k, v ]) => {
-    if (k === 'update') return
+    if (k === 'update' || k === 'standalone') return
     if (v !== undefined) t.fail(`${k} should be undefined`)
   })
   t.pass('By default the CLI passes no controlling params')

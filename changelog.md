@@ -13,7 +13,7 @@
 
 ### Changed
 
-- Breaking change: updated internal module API to accept a proper options object
+- Breaking change: updated CLI API to accept a proper options object
 - Breaking change: `-n` flag now optionally specifies a project name, and is not a shorcut for the `--no-install` param
 - Breaking change: removed export of internal `bootstrap` method
 - Significantly tidied up boilerplate `@http` functions

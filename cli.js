@@ -16,6 +16,8 @@ let update = updater('Create')
  * -v|--verbose ......... prints all output to console
  */
 async function cmd (opts = {}) {
+  // TODO [DEPRECATE] phase out old Arc argv option passing in favor of arg parser + standard options
+  if (Array.isArray(opts)) opts = {}
   let alias = {
     name: [ 'n' ],
     noInstall: [ 'noinstall' ],
@@ -37,7 +39,7 @@ async function cmd (opts = {}) {
     folder: opts.folder || _[0],
     install,
     runtime: opts.runtime || args.runtime,
-    standalone: opts.standalone,
+    standalone: opts.standalone || process.env.ARC_ENV ? true : false,
     static: opts.static || args.static,
     update,
     verbose: opts.verbose || args.verbose,
