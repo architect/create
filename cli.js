@@ -35,14 +35,14 @@ async function cmd (opts = {}) {
   if (typeof args.noInstall === 'boolean') install = !args.noInstall
 
   let params = {
-    name: opts.name || args.name,
-    folder: opts.folder || _[0],
+    name: args.name,
+    folder: _[0],
     install,
-    runtime: opts.runtime || args.runtime,
+    runtime: args.runtime,
     standalone: opts.standalone || process.env.ARC_ENV ? true : false,
-    static: opts.static || args.static,
+    static: args.static,
     update,
-    verbose: opts.verbose || args.verbose,
+    verbose: args.verbose,
   }
   return create(params)
 }
