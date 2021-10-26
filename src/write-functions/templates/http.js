@@ -1,4 +1,4 @@
-let learn = 'learn more about HTTP functions here: https://arc.codes/primitives/http'
+let learn = 'learn more about HTTP functions here: https://arc.codes/http'
 let css = /* css */`
   * {
     margin: 0;

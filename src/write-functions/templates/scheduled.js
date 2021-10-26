@@ -1,4 +1,4 @@
-let learn = 'learn more about scheduled functions here: https://arc.codes/primitives/scheduled'
+let learn = 'learn more about scheduled functions here: https://arc.codes/scheduled'
 
 let node = `// ${learn}
 exports.handler = async function scheduled (event) {

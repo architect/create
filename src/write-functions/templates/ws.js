@@ -1,4 +1,4 @@
-let learn = 'learn more about WebSocket functions here: https://arc.codes/primitives/ws'
+let learn = 'learn more about WebSocket functions here: https://arc.codes/ws'
 
 let node = `// ${learn}
 exports.handler = async function ws (req) {
