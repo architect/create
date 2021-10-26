@@ -13,7 +13,7 @@ let argv = process.argv
 let args = s => process.argv = [ 'fake-env', 'fake-file', ...s.split(' ').filter(Boolean) ]
 
 test('CLI flags and params', async t => {
-  t.plan(20)
+  t.plan(15)
   args('')
   await cli()
   Object.entries(createParams).forEach(([ k, v ]) => {
@@ -25,10 +25,6 @@ test('CLI flags and params', async t => {
 
   // Name
   let name = 'hi'
-  await cli({ name })
-  t.equal(createParams.name, name, 'Got name from module params')
-  reset()
-
   args(`--name ${name}`)
   await cli()
   t.equal(createParams.name, name, 'Got name from CLI --name')
@@ -60,10 +56,6 @@ test('CLI flags and params', async t => {
 
   // Runtime
   let runtime = 'python'
-  await cli({ runtime })
-  t.equal(createParams.runtime, runtime, 'Got runtime from module params')
-  reset()
-
   args(`--runtime ${runtime}`)
   await cli()
   t.equal(createParams.runtime, runtime, 'Got runtime from CLI --runtime')
@@ -80,20 +72,12 @@ test('CLI flags and params', async t => {
   reset()
 
   // Static
-  await cli({ static: true })
-  t.ok(createParams.static, 'Got static from module params')
-  reset()
-
   args('--static')
   await cli()
   t.ok(createParams.static, 'Got static from CLI')
   reset()
 
   // Verbose
-  await cli({ verbose: true })
-  t.ok(createParams.verbose, 'Got verbose from module params')
-  reset()
-
   args('--verbose')
   await cli()
   t.ok(createParams.verbose, 'Got verbose from CLI')
@@ -106,10 +90,6 @@ test('CLI flags and params', async t => {
 
   // Folder
   let folder = './foo'
-  await cli({ folder })
-  t.equal(createParams.folder, folder, 'Got folder from module params')
-  reset()
-
   args(folder)
   await cli()
   t.equal(createParams.folder, folder, 'Got folder from CLI')
