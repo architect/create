@@ -1,4 +1,4 @@
-let learn = 'learn more about queue functions here: https://arc.codes/primitives/queues'
+let learn = 'learn more about queue functions here: https://arc.codes/queues'
 
 let node = `// ${learn}
 exports.handler = async function queue (event) {

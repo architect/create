@@ -1,4 +1,4 @@
-let learn = 'learn more about event functions here: https://arc.codes/primitives/events'
+let learn = 'learn more about event functions here: https://arc.codes/events'
 
 let node = `// ${learn}
 exports.handler = async function subscribe (event) {
