@@ -2,6 +2,14 @@
 
 ---
 
+## [3.0.1] 2021-10-28
+
+### Fixed
+
+- Fixed CLI `init` alias creating directories called `init`
+
+---
+
 ## [3.0.0] 2021-10-17
 
 ### Added
