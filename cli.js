@@ -28,7 +28,7 @@ async function cmd (opts = {}) {
   let string = [ 'name', 'runtime' ]
   let args = minimist(process.argv.slice(2), { alias, string })
   let { _ } = args
-  if ([ 'create', '@architect' ].includes(_[0])) _.splice(0, 1)
+  if ([ '@architect', 'create', 'init' ].includes(_[0])) _.splice(0, 1)
 
   let install = opts.install
   if (typeof args.install === 'boolean') install = args.install
