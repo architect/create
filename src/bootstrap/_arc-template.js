@@ -20,7 +20,7 @@ get /
 
 ${runtime ? '' : '# '}@aws
 ${runtime ? `runtime ${runtime}\n` : ''}# profile default
-# region us-west-1
+# region us-west-2
 `
 
     writeFileSync(appDotArc, arcFile)
