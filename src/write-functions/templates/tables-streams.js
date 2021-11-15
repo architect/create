@@ -1,4 +1,4 @@
-let learn = 'learn more about DynamoDB table stream functions here: https://arc.codes/tables'
+let learn = 'learn more about DynamoDB table stream functions here: https://arc.codes/tables-streams'
 
 let node = `// ${learn}
 exports.handler = async function table (event) {

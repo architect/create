@@ -6,7 +6,7 @@ let events = require('./templates/events')
 let queues = require('./templates/queues')
 let ws = require('./templates/ws')
 let scheduled = require('./templates/scheduled')
-let streams = require('./templates/streams')
+let tablesStreams = require('./templates/tables-streams')
 
 module.exports = function writeCode (params) {
   let { handlerFile, pragma, runtime, body } = params
@@ -21,7 +21,7 @@ module.exports = function writeCode (params) {
   if (runtime.startsWith('ruby'))   run = 'ruby'
   if (!run) throw ReferenceError(`Valid runtime not found: ${params.runtime}`)
 
-  let types = { http, events, queues, ws, scheduled, streams }
+  let types = { http, events, queues, ws, scheduled, 'tables-streams': tablesStreams }
   if (!body) body = pragma === 'http'
     ? types[pragma][run](handler)
     : types[pragma][run]
