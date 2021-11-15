@@ -87,7 +87,7 @@ module.exports = async function create (params = {}, callback) {
 
   try {
     // These are the boilerplate-enabled pragmas
-    let pragmas = [ 'http', 'events', 'plugins', 'queues', 'scheduled', 'static', 'streams', 'ws' ]
+    let pragmas = [ 'http', 'events', 'plugins', 'queues', 'scheduled', 'static', 'tables-streams', 'ws' ]
 
     // Re-seed the inventory since we may now have a new manifest
     inventory = await _inventory({ cwd: folder })
