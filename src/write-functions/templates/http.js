@@ -98,7 +98,7 @@ exports.handler = async function http (req) {
 }`
 
 let ruby = path => `# ${learn}
-def handler(req)
+def handler(req, context)
   {
     statusCode: 200,
     headers: {
