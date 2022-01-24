@@ -2,6 +2,14 @@
 
 ---
 
+## [4.0.0] 2022-01-23
+
+### Changed
+
+- Stop publishing to the GitHub Package registry
+
+---
+
 ## [3.1.0 - 3.1.1] 2021-11-16
 
 ### Added
