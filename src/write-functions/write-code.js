@@ -21,7 +21,7 @@ module.exports = function writeCode (params) {
   if (runtime.startsWith('ruby'))   run = 'ruby'
   if (!run) throw ReferenceError(`Valid runtime not found: ${params.runtime}`)
 
-  let types = { http, events, queues, ws, scheduled, 'tables-streams': tablesStreams }
+  let types = { http, events, queues, ws, scheduled, 'tables-streams': tablesStreams, customLambdas: events }
   if (!body) body = pragma === 'http'
     ? types[pragma][run](handler)
     : types[pragma][run]
