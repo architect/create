@@ -15,12 +15,13 @@ let update = updater('Create')
  * -r|--runtime ......... set up with one of node, deno, python, or ruby
  * -v|--verbose ......... prints all output to console
  */
-async function cmd (opts = {}) {
-  // TODO [DEPRECATE] phase out old Arc argv option passing in favor of arg parser + standard options
-  if (Array.isArray(opts)) opts = {}
+async function main (opts = {}) {
+  // If invoked by Architect, assume installation is unncessary
+  if (process.env.ARC_ENV) opts.install = false
+
   let alias = {
     name: [ 'n' ],
-    noInstall: [ 'noinstall' ],
+    noInstall: [ 'noinstall', 'no-install' ],
     runtime: [ 'r' ],
     static: [ 's' ],
     verbose: [ 'v' ],
@@ -35,32 +36,30 @@ async function cmd (opts = {}) {
   if (typeof args.noInstall === 'boolean') install = !args.noInstall
 
   let params = {
-    name: args.name,
-    folder: _[0],
+    name:       args.name,
+    folder:     _[0],
     install,
-    runtime: args.runtime,
+    inventory:  opts.inventory,
+    runtime:    args.runtime,
     standalone: opts.standalone || process.env.ARC_ENV ? true : false,
-    static: args.static,
+    static:     args.static,
     update,
-    verbose: args.verbose,
+    verbose:    args.verbose,
   }
   return create(params)
 }
 
-module.exports = cmd
+module.exports = main
 
 // allow direct invoke
 if (require.main === module) {
   (async function () {
     try {
       // If invoked by npm init, then we probably do need to `install`
-      let options = {
+      await main({
         install: true,
         standalone: true,
-      }
-      // If invoked by Architect, assume installation is unncessary
-      if (process.env.ARC_ENV) options.install = false
-      await cmd(options)
+      })
     }
     catch (err) {
       update.error(err)
