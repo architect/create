@@ -30,6 +30,7 @@ module.exports = async function create (params = {}, callback) {
   let { install, inventory, runtime, standalone, update } = params
   if (!update) update = updater('Create')
 
+  // Node version check for the `npm init @architect` path
   let { node } = process.versions
   let nodeVer = Number(node.split('.')[0])
   if (nodeVer < 14) {

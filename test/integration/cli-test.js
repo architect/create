@@ -29,7 +29,7 @@ test('should build the basic templated deno runtime project', async t => {
   fs.emptyDirSync(tmp)
   args('--no-install --runtime deno')
   await cli()
-  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'index.ts')), 'src/http/get-index/index.ts created')
+  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'mod.ts')), 'src/http/get-index/mod.ts created')
   t.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime deno/), '"runtime deno" present somewhere in manifest')
 })
 

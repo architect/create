@@ -2,11 +2,13 @@
 
 ---
 
-## [4.0.0] 2022-01-23
+## [next] 2022-01-23
 
 ### Changed
 
+- Default provisioned handler file for Deno is now `mod.ts` (per Deno's guidelines)
 - Stop publishing to the GitHub Package registry
+- Updated dependencies
 
 ---
 
