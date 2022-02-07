@@ -18,10 +18,11 @@ ${name}
 @http
 get /
 
-${runtime ? '' : '# '}@aws
-${runtime ? `runtime ${runtime}\n` : ''}# profile default
-# region us-west-1
-`
+@aws
+# profile default
+region us-west-2
+architecture arm64
+${runtime ? `runtime ${runtime}\n` : ''}`
 
     writeFileSync(appDotArc, arcFile)
     if (standalone) {
