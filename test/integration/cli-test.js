@@ -1,5 +1,5 @@
 let test = require('tape')
-let cli = require('../../cli')
+let cli = require('../../src/cli')
 let { join } = require('path')
 let fs = require('fs-extra')
 let { readFileSync, existsSync } = require('fs')

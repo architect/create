@@ -7,6 +7,7 @@ let getName = require('./_get-name')
 let bootstrap = require('./bootstrap')
 
 let writeConfigs = require('./write-configs')
+let writePlugin = require('./write-plugin')
 let writeFunctions = require('./write-functions')
 let writeStatic = require('./write-static')
 let installArc = require('./_install-arc')
@@ -26,7 +27,7 @@ let installArc = require('./_install-arc')
  * @returns {Promise} - (if no callback is supplied)
  */
 module.exports = async function create (params = {}, callback) {
-  let { install, inventory, runtime, standalone, update } = params
+  let { install, inventory, plugin, runtime, standalone, update } = params
   if (!update) update = updater('Create')
 
   // Node version check for the `npm init @architect` path
@@ -49,38 +50,42 @@ module.exports = async function create (params = {}, callback) {
     })
   }
 
-  // Validate the runtime
-  if (runtime && (runtime !== 'deno' &&
+  try {
+    // Validate the runtime
+    if (runtime && (runtime !== 'deno' &&
                   !runtimes[runtime] &&
                   !runtimeList.includes(runtime)) &&
                   !aliases[runtime]) {
-    update.error(`Invalid runtime specified: ${runtime}`)
-    process.exit(1)
-  }
+      update.error(`Invalid runtime specified: ${runtime}`)
+      process.exit(1)
+    }
 
-  // Get the folder name so we know where to inventory
-  if (params.folder === '/') {
-    update.error('Please specify a valid project name or path')
-    process.exit(1)
-  }
+    // Get the folder name so we know where to inventory
+    if (params.folder === '/') {
+      update.error('Please specify a valid project name or path')
+      process.exit(1)
+    }
 
-  if (standalone) {
+    if (standalone) {
     // Print banner
-    banner(version)
-  }
+      banner(version)
+    }
 
-  // Establish the project name and intended folder
-  let { name, folder } = getName(params)
+    // Establish the project name and intended folder
+    let { name, folder } = getName(params)
 
-  // Get Inventory to determine whether we need to bootstrap a manifest
-  if (!inventory) {
-    params.inventory = await _inventory({ cwd: folder })
-  }
+    // Get Inventory to determine whether we need to bootstrap a manifest
+    if (!inventory) {
+      params.inventory = await _inventory({ cwd: folder })
+    }
 
-  // Bootstrap the project on the filesystem, including new dirs, app.arc manifest, etc.
-  bootstrap({ ...params, name, folder })
+    if (plugin) {
+      return writePlugin(params, callback)
+    }
 
-  try {
+    // Bootstrap the project on the filesystem, including new dirs, app.arc manifest, etc.
+    bootstrap({ ...params, name, folder })
+
     // These are the boilerplate-enabled pragmas
     let pragmas = [ 'http', 'events', 'queues', 'scheduled', 'static', 'tables-streams', 'ws', 'customLambdas' ]
 

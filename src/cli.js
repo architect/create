@@ -11,6 +11,7 @@ let update = updater('Create')
  *
  * -n|--name ............ specify an app name
  * --noinstall .......... do not intall any Architect dependencies
+ * -p|--plugin .......... init a fresh Architect pluin
  * -r|--runtime ......... set up with one of node, deno, python, or ruby
  * -v|--verbose ......... prints all output to console
  */
@@ -21,10 +22,11 @@ async function main (opts = {}) {
   let alias = {
     name: [ 'n' ],
     noInstall: [ 'noinstall', 'no-install' ],
+    plugin: [ 'p' ],
     runtime: [ 'r' ],
     verbose: [ 'v' ],
   }
-  let string = [ 'name', 'runtime' ]
+  let string = [ 'name', 'plugin', 'runtime' ]
   let args = minimist(process.argv.slice(2), { alias, string })
   let { _ } = args
   if ([ '@architect', 'create', 'init' ].includes(_[0])) _.splice(0, 1)
@@ -33,11 +35,15 @@ async function main (opts = {}) {
   if (typeof args.install === 'boolean') install = args.install
   if (typeof args.noInstall === 'boolean') install = !args.noInstall
 
+  let plugin = args.plugin
+  if (plugin === '') plugin = 'new-plugin'
+
   let params = {
     name:       args.name,
     folder:     _[0],
     install,
     inventory:  opts.inventory,
+    plugin,
     runtime:    args.runtime,
     standalone: opts.standalone || process.env.ARC_ENV ? true : false,
     update,
