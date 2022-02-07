@@ -11,7 +11,6 @@ let update = updater('Create')
  *
  * -n|--name ............ specify an app name
  * --noinstall .......... do not intall any Architect dependencies
- * -s|--static .......... init a static app
  * -r|--runtime ......... set up with one of node, deno, python, or ruby
  * -v|--verbose ......... prints all output to console
  */
@@ -23,7 +22,6 @@ async function main (opts = {}) {
     name: [ 'n' ],
     noInstall: [ 'noinstall', 'no-install' ],
     runtime: [ 'r' ],
-    static: [ 's' ],
     verbose: [ 'v' ],
   }
   let string = [ 'name', 'runtime' ]
@@ -42,7 +40,6 @@ async function main (opts = {}) {
     inventory:  opts.inventory,
     runtime:    args.runtime,
     standalone: opts.standalone || process.env.ARC_ENV ? true : false,
-    static:     args.static,
     update,
     verbose:    args.verbose,
   }
