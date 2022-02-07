@@ -5,7 +5,6 @@ let banner = require('./_banner')
 let { aliases, runtimes, runtimeList } = require('lambda-runtimes')
 let getName = require('./_get-name')
 let bootstrap = require('./bootstrap')
-let simpleStatic = require('./simple-static')
 
 let writeConfigs = require('./write-configs')
 let writeFunctions = require('./write-functions')
@@ -68,11 +67,6 @@ module.exports = async function create (params = {}, callback) {
   if (standalone) {
     // Print banner
     banner(version)
-  }
-
-  // TODO [DEPRECATE]
-  if (params.static) {
-    return simpleStatic()
   }
 
   // Establish the project name and intended folder

@@ -7,6 +7,7 @@
 ### Changed
 
 - For newly provisioned projects, `us-west-2` with `arm64` is now the default region + architecture; see: #1304
+- Breaking change: removed support for `--static` flag / initializing a `public/index.html`-based app
 - Default provisioned handler file for Deno is now `mod.ts` (per Deno's guidelines)
 - Stop publishing to the GitHub Package registry
 - Updated dependencies
