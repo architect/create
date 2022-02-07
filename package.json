@@ -4,7 +4,7 @@
   "description": "Idempotently initialize Architect projects",
   "main": "src/index.js",
   "bin": {
-    "arc-create": "cli.js"
+    "arc-create": "src/cli.js"
   },
   "repository": {
     "type": "git",
