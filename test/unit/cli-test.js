@@ -6,7 +6,7 @@ let reset = () => {
   process.argv = argv
   createParams = undefined
 }
-let cli = proxyquire('../../cli', {
+let cli = proxyquire('../../src/cli', {
   '.': create,
 })
 let argv = process.argv
@@ -71,10 +71,10 @@ test('CLI flags and params', async t => {
   t.ok(createParams.standalone, 'Got standalone from module params')
   reset()
 
-  // Static
-  args('--static')
+  // Plugin
+  args('--plugin')
   await cli()
-  t.ok(createParams.static, 'Got static from CLI')
+  t.ok(createParams.plugin, 'Got plugin from CLI')
   reset()
 
   // Verbose
