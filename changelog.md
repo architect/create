@@ -2,6 +2,14 @@
 
 ---
 
+## [4.0.1] 2022-02-25
+
+### Fixed
+
+- Fix issue where Create would attempt (and fail) to write static assets when not needed
+
+---
+
 ## [4.0.0] 2022-01-23
 
 ### Changed

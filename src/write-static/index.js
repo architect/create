@@ -14,6 +14,7 @@ let mjs = require('./templates/mjs')
 module.exports = function assets (params) {
   let { folder, inventory } = params
   let { inv } = inventory
+  if (!inv.static) return
   // Only create a static asset folder if no root handler is defined, and no folder already exists
   let asap = inv._project.rootHandler === 'arcStaticAssetProxy'
   let staticFolder = inv.static.folder && join(folder, inv.static.folder)
