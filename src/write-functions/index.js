@@ -8,14 +8,13 @@ module.exports = function writeFunctions (params) {
   let templates = prefs?.create?.templates
 
   dirs.forEach(({ pragma, src }) => {
-    let { config, handlerFile, body } = lambdasBySrcDir[src]
+    let lambda = lambdasBySrcDir[src]
     let template = templates?.[pragma]
     if (template) {
-      writeTemplate({ template, handlerFile })
+      writeTemplate(template, lambda)
     }
     else {
-      let runtime = params.runtime || config.runtime
-      writeCode({ body, handlerFile, pragma, runtime })
+      writeCode(lambda)
     }
   })
 }

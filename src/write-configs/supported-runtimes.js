@@ -1,7 +1,11 @@
 let { runtimes, aliases } = require('lambda-runtimes')
 
-module.exports = function getSupportedRuntimes () {
+module.exports = function getSupportedRuntimes (inventory) {
   let supportedRuntimes = [ 'node', 'deno', 'ruby', 'python' ]
+  let { _project } = inventory.inv
+  if (_project.customRuntimes?.runtimes) {
+    supportedRuntimes.push(..._project.customRuntimes.runtimes)
+  }
 
   let runtimeNames = supportedRuntimes.map(r => {
     let found = []

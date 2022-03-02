@@ -7,7 +7,7 @@ module.exports = function writeArcConfigs (params) {
   let { inv } = inventory
   let createRuntime = params.runtime    // What the user requested, if anything
   let projectRuntime = inv.aws?.runtime // What the project defaults to, if anything
-  let supported = getSupportedRuntimes()
+  let supported = getSupportedRuntimes(inventory)
 
   // Figure out whether we have something valid to write to disk:
   // An unsupported Create runtime is specified, and project has no default runtime to fall back to
