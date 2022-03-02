@@ -8,11 +8,23 @@ module.exports = function printBanner (version = '') {
   let log = (label, value) => console.log(chalk.grey(`${label.padStart(12)} ${chars.buzz}`), chalk.cyan(value))
 
   let ver = `Architect Create ${version}`
+
   // Try to use the Arc version instead of create
-  let arcPackage = join(__dirname, '..', '..', '..', '..', 'package.json')
-  if (existsSync(arcPackage)) {
-    let pkg = JSON.parse(readFileSync(arcPackage).toString())
-    ver = `Architect ${pkg.version}`
+  let arcLocalPackage = join(__dirname, '..', '..', 'architect', 'package.json')
+  let arcGlobalPackage = join(__dirname, '..', '..', '..', '..', 'package.json')
+
+  let update = pkg => {
+    if (pkg.name === '@architect/architect') {
+      ver = `Architect ${pkg.version}`
+    }
+  }
+  if (existsSync(arcLocalPackage)) {
+    let pkg = JSON.parse(readFileSync(arcLocalPackage))
+    update(pkg)
+  }
+  else if (existsSync(arcGlobalPackage)) {
+    let pkg = JSON.parse(readFileSync(arcGlobalPackage))
+    update(pkg)
   }
 
   console.log() // Space

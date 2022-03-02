@@ -2,6 +2,15 @@
 
 ---
 
+## [4.0.1] 2022-03-02
+
+### Fixed
+
+- Fixed writing boilerplate files for custom runtimes (currently based on the `baseRuntime`); thanks @johncantrell97!
+- Fixed incorrect banner version printing when used in a local project
+
+---
+
 ## [4.0.1] 2022-02-25
 
 ### Fixed

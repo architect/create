@@ -23,18 +23,22 @@ test('Should write body if provided via argument', t => {
   t.plan(2)
   writeCode({
     handlerFile: 'src/lambda/index.js',
-    runtime: 'nodejs14.x',
-    body: 'this is bat country'
+    config: {
+      runtime: 'nodejs14.x',
+    },
+    body: 'lolidk'
   }, () => {})
   t.equal(destination, 'src/lambda/index.js', 'Correct file location to be written to')
-  t.equal(written, 'this is bat country', 'Correct argument-provided content written')
+  t.equal(written, 'lolidk', 'Correct argument-provided content written')
 })
 
 test('Should write template body if no body provided via argument', t => {
   t.plan(2)
   writeCode({
     handlerFile: 'src/http/get-catchall/index.js',
-    runtime: 'nodejs14.x',
+    config: {
+      runtime: 'nodejs14.x',
+    },
     pragma: 'http'
   }, () => {})
   t.equal(destination, 'src/http/get-catchall/index.js', 'Correct file location to be written to')
