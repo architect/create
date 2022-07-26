@@ -2,6 +2,14 @@
 
 ---
 
+## [4.0.5] 2022-07-26
+
+### Changed
+
+- Updated dependencies
+
+---
+
 ## [4.0.4] 2022-05-10
 
 ### Changed
