@@ -2,6 +2,20 @@
 
 ---
 
+## [4.1.0] 2022-09-06
+
+### Added
+
+- Added support for creating ESM (or CJS) handlers
+
+
+### Changed
+
+- Default to writing ESM handlers
+- Only install Architect if project doesn't already have it installed
+
+---
+
 ## [4.0.5] 2022-07-26
 
 ### Changed

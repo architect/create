@@ -1,10 +1,15 @@
 let learn = 'learn more about scheduled functions here: https://arc.codes/scheduled'
 
-let node = `// ${learn}
-exports.handler = async function scheduled (event) {
+let nodeBody = `
   console.log(JSON.stringify(event, null, 2))
   return
-}`
+`
+let node = {
+  esm: `// ${learn}
+export async function handler (event) {${nodeBody}}`,
+  cjs: `// ${learn}
+exports.handler = async function scheduled (event) {${nodeBody}}`
+}
 
 let deno = `// ${learn}
 export async function handler (event: object) {

@@ -1,10 +1,15 @@
 let learn = 'learn more about DynamoDB table stream functions here: https://arc.codes/tables-streams'
 
-let node = `// ${learn}
-exports.handler = async function table (event) {
+let nodeBody = `
   console.log(JSON.stringify(event, null, 2))
   return
-}`
+`
+let node = {
+  esm: `// ${learn}
+export async function handler (event) {${nodeBody}}`,
+  cjs: `// ${learn}
+exports.handler = async function tableStream (event) {${nodeBody}}`
+}
 
 let deno = `// ${learn}
 export async function handler (event: object) {

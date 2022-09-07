@@ -9,7 +9,7 @@ let scheduled = require('./templates/scheduled')
 let tablesStreams = require('./templates/tables-streams')
 
 module.exports = function writeCode (lambda) {
-  let { src, build, handlerFile, pragma, config, body } = lambda
+  let { src, build, handlerFile, handlerModuleSystem, pragma, config, body } = lambda
   let { runtime, runtimeConfig } = config
 
   let filepath = handlerFile
@@ -30,8 +30,15 @@ module.exports = function writeCode (lambda) {
   if (!run) throw ReferenceError(`Valid runtime not found: ${configuredRuntime}`)
 
   let types = { http, events, queues, ws, scheduled, 'tables-streams': tablesStreams, customLambdas: events }
-  if (!body) body = pragma === 'http'
-    ? types[pragma][run](handler)
-    : types[pragma][run]
+  if (!body && pragma === 'http') {
+    body = handlerModuleSystem
+      ? types[pragma][run][handlerModuleSystem](handler)
+      : types[pragma][run](handler)
+  }
+  else if (!body) {
+    body = handlerModuleSystem
+      ? types[pragma][run][handlerModuleSystem]
+      : types[pragma][run]
+  }
   writeFileSync(filepath, body)
 }

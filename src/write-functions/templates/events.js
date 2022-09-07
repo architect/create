@@ -1,10 +1,15 @@
 let learn = 'learn more about event functions here: https://arc.codes/events'
 
-let node = `// ${learn}
-exports.handler = async function subscribe (event) {
+let nodeBody = `
   console.log(JSON.stringify(event, null, 2))
   return
-}`
+`
+let node = {
+  esm: `// ${learn}
+export async function handler (event) {${nodeBody}}`,
+  cjs: `// ${learn}
+exports.handler = async function subscribe (event) {${nodeBody}}`
+}
 
 let deno = `// ${learn}
 export async function handler (event: object) {
