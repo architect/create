@@ -20,7 +20,7 @@ module.exports = function writeArcConfigs (params) {
   if (!inv.lambdaSrcDirs.length) return dirs
 
   Object.values(inv.lambdasBySrcDir).forEach(lambda => {
-    let { name, config, handlerFile, src, type } = lambda
+    let { name, config, handlerFile, src, pragma } = lambda
 
     // Lambda's runtime isn't yet fully reified, but may inherit its runtime from project manifest
     // So don't trust it, but maybe also trust it
@@ -28,11 +28,11 @@ module.exports = function writeArcConfigs (params) {
 
     if (existsSync(handlerFile)) return
     else if (skip) {
-      update.status(`Ignoring @${type} ${name}, runtime not supported: ${createRuntime || projectRuntime}`)
+      update.status(`Ignoring @${pragma} ${name}, runtime not supported: ${createRuntime || projectRuntime}`)
     }
     else {
       mkdirSync(src, { recursive: true })
-      dirs.push({ pragma: type, src })
+      dirs.push({ pragma, src })
 
       // Only write a config file if necessary; namely, its runtime differs from the project default:
       // Create runtime specified differs from Lambda's inherited runtime or runtime alias
