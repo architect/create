@@ -26,6 +26,7 @@ test('Should write body if provided via argument', t => {
     config: {
       runtime: 'nodejs14.x',
     },
+    handlerModuleSystem: 'cjs',
     body: 'lolidk'
   }, () => {})
   t.equal(destination, 'src/lambda/index.js', 'Correct file location to be written to')
@@ -39,6 +40,7 @@ test('Should write template body if no body provided via argument', t => {
     config: {
       runtime: 'nodejs14.x',
     },
+    handlerModuleSystem: 'cjs',
     pragma: 'http'
   }, () => {})
   t.equal(destination, 'src/http/get-catchall/index.js', 'Correct file location to be written to')

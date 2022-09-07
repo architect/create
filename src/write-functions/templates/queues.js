@@ -1,10 +1,16 @@
 let learn = 'learn more about queue functions here: https://arc.codes/queues'
 
-let node = `// ${learn}
-exports.handler = async function queue (event) {
+let nodeBody = `
   console.log(JSON.stringify(event, null, 2))
   return
-}`
+`
+let node = {
+  esm: `// ${learn}
+export async function handler (event) {${nodeBody}}`,
+  cjs: `// ${learn}
+exports.handler = async function queue (event) {${nodeBody}}`
+}
+
 
 let deno = `// ${learn}
 export async function handler (event: object) {

@@ -1,4 +1,6 @@
-let spawn = require('child_process').spawn
+let { join } = require('path')
+let { existsSync, readFileSync } = require('fs')
+let { spawn } = require('child_process')
 
 /**
  * Install @architect/architect into a fresh new project
@@ -6,6 +8,14 @@ let spawn = require('child_process').spawn
 module.exports = function installArc ({ folder, update }, callback) {
   let cwd = folder
   let canceled = false
+
+  let pkgFile = join(cwd, 'package.json')
+  if (existsSync(pkgFile)) {
+    let pkg = JSON.parse(readFileSync(pkgFile))
+    let arc = '@architect/architect'
+    if (pkg.dependencies[arc] || pkg.devDependencies[arc]) return callback()
+  }
+
   update.start('Installing Architect...')
 
   let child = spawn('npm', [ 'i', '@architect/architect', '--save-dev' ], { cwd, shell: true })

@@ -85,8 +85,7 @@ export async function handler (event: object) {
   };
 }`
 
-let node = path => `// ${learn}
-exports.handler = async function http (req) {
+let nodeBody = path => `
   return {
     statusCode: 200,
     headers: {
@@ -95,7 +94,13 @@ exports.handler = async function http (req) {
     },
     body: \`${html('Node.js', path)}\`
   }
-}`
+`
+let node = {
+  esm: path => `// ${learn}
+export async function handler (req) {${nodeBody(path)}}`,
+  cjs: path => `// ${learn}
+exports.handler = async function http (req) {${nodeBody(path)}}`
+}
 
 let ruby = path => `# ${learn}
 def handler(req, context)
