@@ -10,7 +10,7 @@ let args = s => process.argv = [ 'fake-env', 'fake-file', ...s.split(' ') ]
 
 test('integration test setup', async t => {
   t.plan(1)
-  await fs.emptyDir(tmp)
+  fs.emptyDirSync(tmp)
   process.chdir(tmp)
   t.pass('integration test environment setup complete')
 })
@@ -20,7 +20,7 @@ test('should build the basic templated node runtime project', async t => {
   fs.emptyDirSync(tmp)
   args('--no-install --runtime node.js')
   await cli()
-  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'index.mjs')), 'src/http/get-index/index.js created')
+  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'index.mjs')), 'src/http/get-index/index.mjs created')
   t.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime node/), '"runtime node" present somewhere in manifest')
 })
 
