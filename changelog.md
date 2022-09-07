@@ -13,6 +13,7 @@
 
 - Default to writing ESM handlers
 - Only install Architect if project doesn't already have it installed
+- Create handler files when the actual file is missing, not just when the folder is absent
 
 ---
 

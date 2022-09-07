@@ -86,14 +86,11 @@ module.exports = async function create (params = {}, callback) {
     // Bootstrap the project on the filesystem, including new dirs, app.arc manifest, etc.
     bootstrap({ ...params, name, folder })
 
-    // These are the boilerplate-enabled pragmas
-    let pragmas = [ 'http', 'events', 'queues', 'scheduled', 'static', 'tables-streams', 'ws', 'customLambdas' ]
-
     // Re-seed the inventory since we may now have a new manifest
     inventory = await _inventory({ cwd: folder })
 
     // Create dirs (and necessary config.arc files) that do not yet exist
-    let dirs = writeConfigs({ ...params, pragmas, inventory })
+    let dirs = writeConfigs({ ...params, inventory })
 
     if (dirs.length) {
       // One final inventory run now that we have function config files

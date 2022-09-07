@@ -3,7 +3,7 @@ let { existsSync, mkdirSync, writeFileSync } = require('fs')
 let getSupportedRuntimes = require('./supported-runtimes')
 
 module.exports = function writeArcConfigs (params) {
-  let { pragmas, inventory, update } = params
+  let { inventory, update } = params
   let { inv } = inventory
   let createRuntime = params.runtime    // What the user requested, if anything
   let projectRuntime = inv.aws?.runtime // What the project defaults to, if anything
@@ -17,42 +17,40 @@ module.exports = function writeArcConfigs (params) {
   let skip = badCreateRuntime || badProjectRuntime
 
   let dirs = []
-  pragmas.forEach(pragma => {
-    if (inv[pragma] && pragma !== 'static') {
-      inv[pragma].forEach(item => {
-        let { name, config, src } = item
+  if (!inv.lambdaSrcDirs.length) return dirs
 
-        // Lambda's runtime isn't yet fully reified, but may inherit its runtime from project manifest
-        // So don't trust it, but maybe also trust it
-        let lambdaRuntime = config.runtimeAlias || config.runtime
+  Object.values(inv.lambdasBySrcDir).forEach(lambda => {
+    let { name, config, handlerFile, src, type } = lambda
 
-        if (existsSync(src)) return
-        else if (skip) {
-          update.status(`Ignoring @${pragma} ${name}, runtime not supported: ${createRuntime || projectRuntime}`)
-        }
-        else {
-          mkdirSync(src, { recursive: true })
-          dirs.push({ pragma, src })
+    // Lambda's runtime isn't yet fully reified, but may inherit its runtime from project manifest
+    // So don't trust it, but maybe also trust it
+    let lambdaRuntime = config.runtimeAlias || config.runtime
 
-          // Only write a config file if necessary; namely, its runtime differs from the project default:
-          // Create runtime specified differs from Lambda's inherited runtime or runtime alias
-          let createDiffers = createRuntime && (createRuntime !== lambdaRuntime)
-          // Project has a default runtime, and the create runtime differs from it
-          let projectAndCreateDiffer = projectRuntime && createRuntime && (createRuntime !== projectRuntime)
+    if (existsSync(handlerFile)) return
+    else if (skip) {
+      update.status(`Ignoring @${type} ${name}, runtime not supported: ${createRuntime || projectRuntime}`)
+    }
+    else {
+      mkdirSync(src, { recursive: true })
+      dirs.push({ pragma: type, src })
 
-          if (createDiffers || projectAndCreateDiffer) {
-            let runtime = createRuntime || config.runtimeAlias || config.runtime
-            let configPath = join(src, 'config.arc')
-            let arcConfig = `@aws
+      // Only write a config file if necessary; namely, its runtime differs from the project default:
+      // Create runtime specified differs from Lambda's inherited runtime or runtime alias
+      let createDiffers = createRuntime && (createRuntime !== lambdaRuntime)
+      // Project has a default runtime, and the create runtime differs from it
+      let projectAndCreateDiffer = projectRuntime && createRuntime && (createRuntime !== projectRuntime)
+
+      if (createDiffers || projectAndCreateDiffer) {
+        let runtime = createRuntime || config.runtimeAlias || config.runtime
+        let configPath = join(src, 'config.arc')
+        let arcConfig = `@aws
 runtime ${runtime}
 # memory 1152
 # timeout 30
 # concurrency 1
 `
-            writeFileSync(configPath, arcConfig)
-          }
-        }
-      })
+        writeFileSync(configPath, arcConfig)
+      }
     }
   })
   return [ ...new Set(dirs) ].filter(Boolean)
