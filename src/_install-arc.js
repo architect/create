@@ -13,7 +13,7 @@ module.exports = function installArc ({ folder, update }, callback) {
   if (existsSync(pkgFile)) {
     let pkg = JSON.parse(readFileSync(pkgFile))
     let arc = '@architect/architect'
-    if (pkg.dependencies[arc] || pkg.devDependencies[arc]) return callback()
+    if (pkg?.dependencies?.[arc] || pkg?.devDependencies?.[arc]) return callback()
   }
 
   update.start('Installing Architect...')
