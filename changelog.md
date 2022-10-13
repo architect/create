@@ -2,6 +2,15 @@
 
 ---
 
+## [4.1.2] 2022-10-13
+
+### Fixed
+
+- Fixed `arc create` failures for Lambdas created by `set.customLambdas`; fixes #1382, thanks @
+buffpojken!
+
+---
+
 ## [4.1.0 - 4.1.1] 2022-09-06
 
 ### Added
