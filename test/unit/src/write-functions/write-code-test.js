@@ -14,23 +14,16 @@ let writeCode = proxyquire(sut, {
 })
 let test = require('tape')
 
+let inventory = {
+  inv: {
+    _project: {},
+    plugins: null,
+  }
+}
+
 test('Set up env', t => {
   t.plan(1)
   t.ok(writeCode, 'Loaded writeCode')
-})
-
-test('Should write body if provided via argument', t => {
-  t.plan(2)
-  writeCode({
-    handlerFile: 'src/lambda/index.js',
-    config: {
-      runtime: 'nodejs14.x',
-    },
-    handlerModuleSystem: 'cjs',
-    body: 'lolidk'
-  }, () => {})
-  t.equal(destination, 'src/lambda/index.js', 'Correct file location to be written to')
-  t.equal(written, 'lolidk', 'Correct argument-provided content written')
 })
 
 test('Should write template body if no body provided via argument', t => {
@@ -42,7 +35,7 @@ test('Should write template body if no body provided via argument', t => {
     },
     handlerModuleSystem: 'cjs',
     pragma: 'http'
-  }, () => {})
+  }, inventory)
   t.equal(destination, 'src/http/get-catchall/index.js', 'Correct file location to be written to')
   t.match(written, /async function http/, 'Correct argument-provided content written')
 })

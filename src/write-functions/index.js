@@ -1,20 +1,21 @@
 let writeTemplate = require('./write-template')
 let writeCode = require('./write-code')
 
-module.exports = function writeFunctions (params) {
+module.exports = async function writeFunctions (params) {
   let { dirs, inventory } = params
   let { lambdasBySrcDir } = inventory.inv
   let prefs = inventory.inv._project.preferences
   let templates = prefs?.create?.templates
 
-  dirs.forEach(({ pragma, src }) => {
+  for (let dir of dirs) {
+    let { pragma, src } = dir
     let lambda = lambdasBySrcDir[src]
     let template = templates?.[pragma]
     if (template) {
-      writeTemplate(template, lambda)
+      writeTemplate(lambda, template)
     }
     else {
-      writeCode(lambda)
+      await writeCode(lambda, inventory)
     }
-  })
+  }
 }

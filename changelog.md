@@ -2,6 +2,19 @@
 
 ---
 
+## [4.2.0] 2023-04-10
+
+### Added
+
+- Added support for create plugin API, namely: `create.register`, `create.handlers`
+
+
+### Changed
+
+- Updated dependencies
+
+---
+
 ## [4.1.4] 2023-01-18
 
 ### Changed
