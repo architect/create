@@ -14,7 +14,7 @@ test('Set up env', t => {
 
 test('No name/folder specified', t => {
   t.plan(2)
-  let result = getName({})
+  let result = getName({ cwd })
   t.equal(result.name, defaultName, 'Got default name of current directory')
   t.equal(result.folder, cwd, 'Got default folder of current directory')
 })
@@ -22,7 +22,7 @@ test('No name/folder specified', t => {
 test('Name specified', t => {
   t.plan(2)
   let name = 'hi'
-  let result = getName({ name })
+  let result = getName({ cwd, name })
   t.equal(result.name, name, 'Name passed through')
   t.equal(result.folder, cwd, 'Got default folder of current directory')
 })
@@ -33,38 +33,38 @@ test('Folder specified', t => {
   let result
 
   folder = cwd
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   t.equal(result.name, defaultName, 'Got default name of current directory')
   t.equal(result.folder, folder, `Got specified folder: ${folder}`)
 
   folder = s`foo`
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   t.equal(result.name, 'foo', 'Got default name of current directory')
   t.equal(result.folder, join(cwd, 'foo'), `Got specified folder: ${folder}`)
 
   folder = s`./foo`
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   t.equal(result.name, 'foo', 'Got default name of current directory')
   t.equal(result.folder, join(cwd, 'foo'), `Got specified folder: ${folder}`)
 
   folder = s`../foo`
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   t.equal(result.name, 'foo', 'Got default name of current directory')
   t.equal(result.folder, join(cwd, '..', 'foo'), `Got specified folder: ${folder}`)
 
   folder = s`../../foo`
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   t.equal(result.name, 'foo', 'Got default name of current directory')
   t.equal(result.folder, join(cwd, '..', '..', 'foo'), `Got specified folder: ${folder}`)
 
   folder = s`/foo`
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   let root = os.platform == 'win32' ? process.cwd().split(sep)[0] : sep
   t.equal(result.name, 'foo', 'Got default name of current directory')
   t.equal(result.folder, join(root, 'foo'), `Got specified folder: ${folder}`)
 
   folder = s`./`
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   t.equal(result.name, defaultName, 'Got default name of current directory')
   t.equal(result.folder, cwd, `Got specified folder: ${folder}`)
 
@@ -72,13 +72,13 @@ test('Folder specified', t => {
   let pop = p => p.split(sep).reverse().shift()
   folder = s`../`
   path = join(cwd, '..')
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   t.equal(result.name, pop(path), `Got name from directory: ${result.name}`)
   t.equal(result.folder, path, `Got specified folder: ${folder}`)
 
   folder = s`../../`
   path = join(cwd, '..', '..')
-  result = getName({ folder })
+  result = getName({ cwd, folder })
   t.equal(result.name, pop(path), `Got name from directory: ${result.name}`)
   t.equal(result.folder, path, `Got specified folder: ${folder}`)
 })
