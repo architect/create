@@ -2,7 +2,7 @@ let { existsSync, readFileSync, writeFileSync } = require('fs')
 let { join, resolve } = require('path')
 let { homedir } = require('os')
 
-module.exports = function writeTemplate (template, lambda) {
+module.exports = function writeTemplate (lambda, template) {
   let { src, build, handlerFile } = lambda
 
   let filepath = handlerFile

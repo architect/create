@@ -66,8 +66,8 @@ module.exports = async function create (params = {}, callback) {
       process.exit(1)
     }
 
-    if (standalone) {
     // Print banner
+    if (standalone) {
       banner(version)
     }
 
@@ -96,7 +96,7 @@ module.exports = async function create (params = {}, callback) {
       // One final inventory run now that we have function config files
       inventory = await _inventory({ cwd: folder })
 
-      writeFunctions({ ...params, dirs, inventory })
+      await writeFunctions({ ...params, dirs, inventory })
       writeStatic({ folder, inventory })
 
       dirs.forEach(d => {
