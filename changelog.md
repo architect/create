@@ -13,6 +13,12 @@
 
 - Updated dependencies
 
+
+### Fixed
+
+- Respect incoming `cwd` property, instead of relying solely on `process.cwd()`
+- Ensure transpiled and compiled handlers aren't (re)created when they haven't been compiled
+
 ---
 
 ## [4.1.4] 2023-01-18

@@ -29,6 +29,7 @@ let installArc = require('./_install-arc')
 module.exports = async function create (params = {}, callback) {
   let { install, inventory, plugin, runtime, standalone, update } = params
   if (!update) update = updater('Create')
+  params.cwd = params.cwd || process.cwd()
 
   // Node version check for the `npm init @architect` path
   let { node } = process.versions
@@ -37,7 +38,7 @@ module.exports = async function create (params = {}, callback) {
     update.error('Sorry, Architect Create requires Node 14 and above')
     process.exit(1)
   }
-  // TODO: This blows up 12 if required in global; move this back after 12 is EOL
+  // TODO: This blows up Node.js 12 running `npm init @architect` if required in global; move this back after 12 is EOL
   // eslint-disable-next-line
   let _inventory = require('@architect/inventory')
 

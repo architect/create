@@ -1,5 +1,5 @@
 let { join } = require('path')
-let { existsSync, mkdirSync, writeFileSync } = require('fs')
+let { existsSync, mkdirSync, readdirSync, writeFileSync } = require('fs')
 let getSupportedRuntimes = require('./supported-runtimes')
 
 module.exports = function writeArcConfigs (params) {
@@ -25,8 +25,11 @@ module.exports = function writeArcConfigs (params) {
     // Lambda's runtime isn't yet fully reified, but may inherit its runtime from project manifest
     // So don't trust it, but maybe also trust it
     let lambdaRuntime = config.runtimeAlias || config.runtime
+    let runtimeType = config?.runtimeConfig?.type
 
-    if (existsSync(handlerFile)) return
+    if ((!runtimeType || runtimeType === 'interpreted') && existsSync(handlerFile)) return
+    // Don't try to (re)create handlers because the handlerFile isn't there; that may just mean it hasn't been compiled yet
+    else if (runtimeType !== 'interpreted' && existsSync(src) && readdirSync(src).length) return
     else if (skip) {
       update.status(`Ignoring @${pragma} ${name}, runtime not supported: ${createRuntime || projectRuntime}`)
     }
