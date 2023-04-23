@@ -17,7 +17,7 @@ module.exports = function writeArcConfigs (params) {
   let skip = badCreateRuntime || badProjectRuntime
 
   let dirs = []
-  if (!inv.lambdaSrcDirs.length) return dirs
+  if (!inv.lambdaSrcDirs?.length) return dirs
 
   Object.values(inv.lambdasBySrcDir).forEach(lambda => {
     let { name, config, handlerFile, src, pragma } = lambda
