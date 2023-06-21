@@ -2,6 +2,14 @@
 
 ---
 
+## [4.2.1] 2023-06-21
+
+### Fixed
+
+- Fixed resource creation in projects with multi-tenant Lambdae; fixes #1432, thanks @andybee!
+
+---
+
 ## [4.2.0] 2023-04-10
 
 ### Added

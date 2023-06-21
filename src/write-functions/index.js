@@ -9,13 +9,13 @@ module.exports = async function writeFunctions (params) {
 
   for (let dir of dirs) {
     let { pragma, src } = dir
-    let lambda = lambdasBySrcDir[src]
+    let lambdae = lambdasBySrcDir[src]
     let template = templates?.[pragma]
     if (template) {
-      writeTemplate(lambda, template)
+      writeTemplate(lambdae, template)
     }
     else {
-      await writeCode(lambda, inventory)
+      await writeCode(lambdae, inventory)
     }
   }
 }
