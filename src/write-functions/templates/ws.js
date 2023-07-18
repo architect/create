@@ -25,7 +25,7 @@ end`
 
 let python = `# ${learn}
 def handler(event, context):
-  print(event)
-  return {statusCode: 200}`
+    print(event)
+    return {'statusCode': 200}`
 
 module.exports = { node, deno, ruby, python }

@@ -2,6 +2,14 @@
 
 ---
 
+## [4.2.2] 2023-07-17
+
+### Fixed
+
+- Fixed Python `@ws` default templates and increased Python indentation because Python
+
+---
+
 ## [4.2.1] 2023-06-21
 
 ### Fixed
