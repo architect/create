@@ -38,7 +38,7 @@ test('should build the basic templated python runtime project', async t => {
   fs.emptyDirSync(tmp)
   args('--no-install --runtime python')
   await cli()
-  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'index.py')), 'src/http/get-index/index.py created')
+  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'lambda.py')), 'src/http/get-index/lambda.py created')
   t.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime python/), '"runtime python" present somewhere in manifest')
 })
 
@@ -47,7 +47,7 @@ test('should build the basic templated ruby runtime project', async t => {
   fs.emptyDirSync(tmp)
   args('--no-install --runtime ruby')
   await cli()
-  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'index.rb')), 'src/http/get-index/index.rb created')
+  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'lambda.rb')), 'src/http/get-index/lambda.rb created')
   t.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime ruby/), '"runtime ruby" present somewhere in manifest')
 })
 
