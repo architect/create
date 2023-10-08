@@ -18,7 +18,7 @@ export async function handler (event: object) {
 }`
 
 let ruby = `# ${learn}
-def handler(event)
+def handler(event:, context:)
   puts event
   true
 end`
