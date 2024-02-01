@@ -21,7 +21,6 @@ get /
 @aws
 # profile default
 region us-west-2
-architecture arm64
 ${runtime ? `runtime ${runtime}\n` : ''}`
 
     writeFileSync(appDotArc, arcFile)
