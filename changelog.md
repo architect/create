@@ -8,6 +8,7 @@
 
 - Breaking change: `nodejs20.x` and `python3.12` are now the default Node.js and Python Lambda runtimes, respectively
 - Breaking change: removed support for Node.js 14.x (now EOL, and no longer available to created in AWS Lambda)
+- Removed `arm64` template architecture setting, as that is now the default
 - Added Node.js 20.x to test matrix
 - Updated dependencies
 

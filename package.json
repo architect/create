@@ -23,10 +23,10 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@architect/inventory": "~4.0.0-RC.3",
-    "@architect/utils": "~4.0.0-RC.4",
+    "@architect/inventory": "~4.0.0",
+    "@architect/utils": "~4.0.0",
     "chalk": "4.1.2",
-    "lambda-runtimes": "~2.0.0",
+    "lambda-runtimes": "~2.0.1",
     "minimist": "~1.2.8"
   },
   "devDependencies": {
