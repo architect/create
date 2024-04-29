@@ -21,7 +21,7 @@ module.exports = function bootstrap (params) {
     update.status(
       'Bootstrapping new Architect project',
       `Project name .. ${name}`,
-      `Creating in ... ${folder}`
+      `Creating in ... ${folder}`,
     )
     mkdirSync(folder, { recursive: true })
   }

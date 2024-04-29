@@ -39,7 +39,6 @@ module.exports = async function create (params = {}, callback) {
     process.exit(1)
   }
   // TODO: This blows up Node.js 12 running `npm init @architect` if required in global; move this back after 12 is EOL
-  // eslint-disable-next-line
   let _inventory = require('@architect/inventory')
 
   let promise

@@ -23,17 +23,17 @@ module.exports = function arcPackage ({ name, folder }) {
         version: '0.0.0',
         description: 'A fresh new Architect project!',
         scripts: {
-          start: 'npx sandbox'
+          start: 'npx sandbox',
         },
-        devDependencies: {}
+        devDependencies: {},
       }
       writeFileSync(packageFile, JSON.stringify(package, null, 2))
       return true
     }
     else {
       let existing = JSON.parse(readFileSync(packageFile).toString())
-      if (existing.dependencies && existing.dependencies['@architect/architect'] ||
-          existing.devDependencies && existing.devDependencies['@architect/architect']) {
+      if ((existing.dependencies && existing.dependencies['@architect/architect']) ||
+          (existing.devDependencies && existing.devDependencies['@architect/architect'])) {
         return false
       }
       return true

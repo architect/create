@@ -8,7 +8,7 @@ let node = {
   esm: `// ${learn}
 export async function handler (req) {${nodeBody}}`,
   cjs: `// ${learn}
-exports.handler = async function ws (req) {${nodeBody}}`
+exports.handler = async function ws (req) {${nodeBody}}`,
 }
 
 let deno = `// ${learn}

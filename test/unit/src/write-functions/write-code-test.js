@@ -6,11 +6,11 @@ let fsStub = {
   writeFileSync: (dest, data) => {
     destination = dest
     written = data
-  }
+  },
 }
 let sut = join(process.cwd(), 'src', 'write-functions', 'write-code')
 let writeCode = proxyquire(sut, {
-  fs: fsStub
+  fs: fsStub,
 })
 let test = require('tape')
 
@@ -18,7 +18,7 @@ let inventory = {
   inv: {
     _project: {},
     plugins: null,
-  }
+  },
 }
 
 test('Set up env', t => {
@@ -34,7 +34,7 @@ test('Should write template body if no body provided via argument', t => {
       runtime: 'nodejs14.x',
     },
     handlerModuleSystem: 'cjs',
-    pragma: 'http'
+    pragma: 'http',
   }, inventory)
   t.equal(destination, 'src/http/get-catchall/index.js', 'Correct file location to be written to')
   t.match(written, /async function http/, 'Correct argument-provided content written')

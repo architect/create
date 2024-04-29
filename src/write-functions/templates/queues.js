@@ -8,7 +8,7 @@ let node = {
   esm: `// ${learn}
 export async function handler (event) {${nodeBody}}`,
   cjs: `// ${learn}
-exports.handler = async function queue (event) {${nodeBody}}`
+exports.handler = async function queue (event) {${nodeBody}}`,
 }
 
 

@@ -99,7 +99,7 @@ let node = {
   esm: path => `// ${learn}
 export async function handler (req) {${nodeBody(path)}}`,
   cjs: path => `// ${learn}
-exports.handler = async function http (req) {${nodeBody(path)}}`
+exports.handler = async function http (req) {${nodeBody(path)}}`,
 }
 
 let ruby = path => `# ${learn}

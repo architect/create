@@ -16,10 +16,10 @@ let fsStub = {
     destination = dest
     written = data
   },
-  '@noCallThru': false
+  '@noCallThru': false,
 }
 let arcPackage = proxyquire('../../../../src/bootstrap/_arc-package', {
-  fs: fsStub
+  fs: fsStub,
 })
 let foo = 'foo'
 let name = foo

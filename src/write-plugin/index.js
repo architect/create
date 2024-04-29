@@ -18,7 +18,7 @@ module.exports = function writeNewPlugin (params, callback) {
   writeFileSync(pluginFile, template)
   update.status(
     `Created new plugin at: ${join('src', 'plugins', plugin)}`,
-    `Add '${plugin}' to your project manifest's @plugins pragma`
+    `Add '${plugin}' to your project manifest's @plugins pragma`,
   )
   callback()
 }
