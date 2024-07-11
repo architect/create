@@ -103,7 +103,7 @@ exports.handler = async function http (req) {${nodeBody(path)}}`,
 }
 
 let ruby = path => `# ${learn}
-def handler(req, context)
+def handler(event:, context:)
   {
     statusCode: 200,
     headers: {
