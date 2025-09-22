@@ -20,7 +20,7 @@
     "rc": "npm version prerelease --preid RC"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "license": "Apache-2.0",
   "dependencies": {
