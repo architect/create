@@ -1,6 +1,6 @@
 let { dirname, join, sep } = require('path')
 let { existsSync, mkdirSync, writeFileSync } = require('fs')
-let { aliases, runtimes } = require('lambda-runtimes')
+let { aliases, runtimes } = require('@architect/utils/lambda-runtimes')
 let { deepFrozenCopy } = require('@architect/utils')
 let http = require('./templates/http')
 let events = require('./templates/events')

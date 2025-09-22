@@ -1,7 +1,6 @@
-let chalk = require('chalk')
+let { chars, chalk } = require('@architect/utils')
 let { existsSync, readFileSync } = require('fs')
 let { join } = require('path')
-let { chars } = require('@architect/utils')
 
 module.exports = function printBanner (version = '') {
   // Boilerplate

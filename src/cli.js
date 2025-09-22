@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-let { updater } = require('@architect/utils')
+let { updater, minimist } = require('@architect/utils')
 let create = require('.')
-let minimist = require('minimist')
 let update = updater('Create')
 
 /**

@@ -1,4 +1,4 @@
-let { runtimes, aliases } = require('lambda-runtimes')
+let { runtimes, aliases } = require('@architect/utils/lambda-runtimes')
 
 module.exports = function getSupportedRuntimes (inventory) {
   let supportedRuntimes = [ 'node', 'deno', 'ruby', 'python' ]

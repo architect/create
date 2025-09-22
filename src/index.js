@@ -2,7 +2,7 @@ let { sep } = require('path')
 let { updater } = require('@architect/utils')
 let { version } = require('../package.json')
 let banner = require('./_banner')
-let { aliases, runtimes, runtimeList } = require('lambda-runtimes')
+let { aliases, runtimes, runtimeList } = require('@architect/utils/lambda-runtimes')
 let getName = require('./_get-name')
 let bootstrap = require('./bootstrap')
 
