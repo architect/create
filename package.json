@@ -24,7 +24,7 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@architect/inventory": "~4.0.5",
+    "@architect/inventory": "~4.0.10-RC.0",
     "@architect/utils": "~5.0.0-RC.0"
   },
   "devDependencies": {
