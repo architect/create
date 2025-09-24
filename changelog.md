@@ -2,6 +2,15 @@
 
 ---
 
+## [6.0.0] 2024-09-24
+
+### Changed
+
+- Updated dependencies
+- Updated to >= node 20
+
+---
+
 ## [5.0.3] 2024-04-29
 
 ### Changed
