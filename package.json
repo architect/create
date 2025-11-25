@@ -20,12 +20,12 @@
     "rc": "npm version prerelease --preid RC"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "@architect/inventory": "~5.0.0",
-    "@architect/utils": "~5.0.0-RC.0"
+    "@architect/inventory": "~6.0.0-RC.0",
+    "@architect/utils": "~6.0.0-RC.1"
   },
   "devDependencies": {
     "@architect/eslint-config": "~3.0.0",
