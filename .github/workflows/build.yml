@@ -51,6 +51,7 @@ jobs:
       run: npm test
       env:
         CI: true
+        NODE_OPTIONS: --no-warnings
 
     - name: Notify
       uses: sarisia/actions-status-discord@v1
