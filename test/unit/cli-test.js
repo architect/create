@@ -1,102 +1,117 @@
-let proxyquire = require('proxyquire')
-let test = require('tape')
+const { test } = require('node:test')
+const assert = require('node:assert')
+const Module = require('module')
+
 let createParams
-let create = p => createParams = p
+const argv = process.argv
+const args = s => process.argv = [ 'fake-env', 'fake-file', ...s.split(' ').filter(Boolean) ]
 let reset = () => {
   process.argv = argv
   createParams = undefined
 }
-let cli = proxyquire('../../src/cli', {
-  '.': create,
-})
-let argv = process.argv
-let args = s => process.argv = [ 'fake-env', 'fake-file', ...s.split(' ').filter(Boolean) ]
 
-test('CLI flags and params', async t => {
-  t.plan(15)
+// Mock the create module by intercepting require
+const originalRequire = Module.prototype.require
+let cli
+
+test('CLI flags and params', async () => {
+  // Setup: Mock the create module
+  Module.prototype.require = function (id) {
+    if (id === '.' || id === './index.js') {
+      return (p) => { createParams = p }
+    }
+    return originalRequire.apply(this, arguments)
+  }
+
+  // Clear require cache and reload cli
+  delete require.cache[require.resolve('../../src/cli')]
+  cli = require('../../src/cli')
+
+  // Restore require after loading
+  Module.prototype.require = originalRequire
+
   args('')
   await cli()
   Object.entries(createParams).forEach(([ k, v ]) => {
     if (k === 'update' || k === 'standalone') return
-    if (v !== undefined) t.fail(`${k} should be undefined`)
+    if (v !== undefined) assert.fail(`${k} should be undefined`)
   })
-  t.pass('By default the CLI passes no controlling params')
   reset()
 
   // Name
   let name = 'hi'
   args(`--name ${name}`)
   await cli()
-  t.equal(createParams.name, name, 'Got name from CLI --name')
+  assert.equal(createParams.name, name, 'Got name from CLI --name')
   reset()
 
   args(`-n ${name}`)
   await cli()
-  t.equal(createParams.name, name, 'Got name from CLI -n')
+  assert.equal(createParams.name, name, 'Got name from CLI -n')
   reset()
 
   // Install / no-install
   await cli({ install: true })
-  t.not(createParams.install, 'Got install: true from module params')
+  assert.ok(createParams.install, 'Got install: true from module params')
   reset()
 
   await cli({ install: false })
-  t.notOk(createParams.install, 'Got install: false from module params')
+  assert.ok(!createParams.install, 'Got install: false from module params')
   reset()
 
   args(`--noinstall`)
   await cli()
-  t.notOk(createParams.install, 'Got install: false from CLI --noinstall')
+  assert.ok(!createParams.install, 'Got install: false from CLI --noinstall')
   reset()
 
   args(`--no-install`)
   await cli()
-  t.notOk(createParams.install, 'Got install: false from CLI --no-install')
+  assert.ok(!createParams.install, 'Got install: false from CLI --no-install')
   reset()
 
   // Runtime
   let runtime = 'python'
   args(`--runtime ${runtime}`)
   await cli()
-  t.equal(createParams.runtime, runtime, 'Got runtime from CLI --runtime')
+  assert.equal(createParams.runtime, runtime, 'Got runtime from CLI --runtime')
   reset()
 
   args(`-r ${runtime}`)
   await cli()
-  t.equal(createParams.runtime, runtime, 'Got runtime from CLI -r')
+  assert.equal(createParams.runtime, runtime, 'Got runtime from CLI -r')
   reset()
 
   // Standalone
   await cli({ standalone: true })
-  t.ok(createParams.standalone, 'Got standalone from module params')
+  assert.ok(createParams.standalone, 'Got standalone from module params')
   reset()
 
   // Plugin
   args('--plugin')
   await cli()
-  t.ok(createParams.plugin, 'Got plugin from CLI')
+  assert.ok(createParams.plugin, 'Got plugin from CLI')
   reset()
 
   // Verbose
   args('--verbose')
   await cli()
-  t.ok(createParams.verbose, 'Got verbose from CLI')
+  assert.ok(createParams.verbose, 'Got verbose from CLI')
   reset()
 
   args('-v')
   await cli()
-  t.ok(createParams.verbose, 'Got verbose from CLI')
+  assert.ok(createParams.verbose, 'Got verbose from CLI')
   reset()
 
   // Folder
   let folder = './foo'
   args(folder)
   await cli()
-  t.equal(createParams.folder, folder, 'Got folder from CLI')
+  assert.equal(createParams.folder, folder, 'Got folder from CLI')
   reset()
 
   args(`create ${folder}`) // Ignore create
   await cli()
-  t.equal(createParams.folder, folder, `Got folder from CLI, ignored 'create'`)
+  assert.equal(createParams.folder, folder, `Got folder from CLI, ignored 'create'`)
   reset()
 })
