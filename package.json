@@ -1,6 +1,6 @@
 {
   "name": "@architect/create",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "Idempotently initialize Architect projects",
   "main": "src/index.js",
   "bin": {
@@ -13,9 +13,9 @@
   "scripts": {
     "test": "npm run lint && npm run test:integration && npm run coverage",
     "test:nolint": "npm run test:integration && npm run coverage",
-    "test:unit": "cross-env PORT=6666 tape 'test/unit/**/*-test.js' | tap-arc",
-    "test:integration": "cross-env tape 'test/integration/**/*-test.js' | tap-arc",
-    "coverage": "nyc --reporter=lcov --reporter=text npm run test:unit",
+    "test:unit": "node --test 'test/unit/**/*-test.js'",
+    "test:integration": "node test/integration/run.js",
+    "coverage": "node --test --experimental-test-coverage 'test/unit/**/*-test.js'",
     "lint": "eslint . --fix",
     "rc": "npm version prerelease --preid RC"
   },
@@ -29,12 +29,6 @@
   },
   "devDependencies": {
     "@architect/eslint-config": "~3.0.0",
-    "cross-env": "~10.0.0",
-    "eslint": "~9.36.0",
-    "fs-extra": "~11.3.2",
-    "nyc": "~17.1.0",
-    "proxyquire": "^2.1.3",
-    "tap-arc": "^1.2.2",
-    "tape": "~5.9.0"
+    "eslint": "~9.39.1"
   }
 }

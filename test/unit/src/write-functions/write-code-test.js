@@ -1,18 +1,12 @@
-let { join } = require('path')
-let proxyquire = require('proxyquire')
+let { describe, it, beforeEach, afterEach } = require('node:test')
+let assert = require('node:assert/strict')
+let Module = require('module')
+
 let destination
 let written
-let fsStub = {
-  writeFileSync: (dest, data) => {
-    destination = dest
-    written = data
-  },
-}
-let sut = join(process.cwd(), 'src', 'write-functions', 'write-code')
-let writeCode = proxyquire(sut, {
-  fs: fsStub,
-})
-let test = require('tape')
+
+// Store original require
+let originalRequire = Module.prototype.require
 
 let inventory = {
   inv: {
@@ -21,21 +15,53 @@ let inventory = {
   },
 }
 
-test('Set up env', t => {
-  t.plan(1)
-  t.ok(writeCode, 'Loaded writeCode')
-})
+describe('write-code', () => {
+  let writeCode
 
-test('Should write template body if no body provided via argument', t => {
-  t.plan(2)
-  writeCode({
-    handlerFile: 'src/http/get-catchall/index.js',
-    config: {
-      runtime: 'nodejs14.x',
-    },
-    handlerModuleSystem: 'cjs',
-    pragma: 'http',
-  }, inventory)
-  t.equal(destination, 'src/http/get-catchall/index.js', 'Correct file location to be written to')
-  t.match(written, /async function http/, 'Correct argument-provided content written')
+  beforeEach(() => {
+    // Reset state
+    destination = ''
+    written = ''
+
+    // Mock fs module
+    Module.prototype.require = function (id) {
+      if (id === 'fs') {
+        return {
+          existsSync: originalRequire.apply(this, [ 'fs' ]).existsSync,
+          mkdirSync: originalRequire.apply(this, [ 'fs' ]).mkdirSync,
+          writeFileSync: (dest, data) => {
+            destination = dest
+            written = data
+          },
+        }
+      }
+      return originalRequire.apply(this, arguments)
+    }
+
+    // Clear module cache and require the module
+    delete require.cache[require.resolve('../../../../src/write-functions/write-code')]
+    writeCode = require('../../../../src/write-functions/write-code')
+  })
+
+  afterEach(() => {
+    // Restore original require
+    Module.prototype.require = originalRequire
+  })
+
+  it('should load the module', () => {
+    assert.ok(writeCode, 'Loaded writeCode')
+  })
+
+  it('should write template body if no body provided via argument', async () => {
+    await writeCode({
+      handlerFile: 'src/http/get-catchall/index.js',
+      config: {
+        runtime: 'nodejs14.x',
+      },
+      handlerModuleSystem: 'cjs',
+      pragma: 'http',
+    }, inventory)
+    assert.equal(destination, 'src/http/get-catchall/index.js', 'Correct file location to be written to')
+    assert.match(written, /async function http/, 'Correct argument-provided content written')
+  })
 })

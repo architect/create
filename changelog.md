@@ -2,6 +2,18 @@
 
 ---
 
+## [7.0.1] 2025-11-28
+
+- Removed almost all devdeps in favour of node internal test runner/coverage
+
+---
+
+### [7.0.0] 2025-11-27
+
+- Updated to >= node 22
+
+---
+
 ## [6.0.0] 2024-09-24
 
 ### Changed

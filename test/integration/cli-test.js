@@ -1,59 +1,75 @@
-let test = require('tape')
-let cli = require('../../src/cli')
-let { join } = require('path')
-let fs = require('fs-extra')
-let { readFileSync, existsSync } = require('fs')
-let tmp = join(__dirname, '..', 'tmp')
-let origCwd = process.cwd()
-let argv = process.argv
-let args = s => process.argv = [ 'fake-env', 'fake-file', ...s.split(' ') ]
+let { describe, it, before, beforeEach } = require('node:test')
+let assert = require('node:assert/strict')
+let create = require('../../src/index')
+let { join, resolve } = require('path')
+let { readFileSync, existsSync, rmSync, mkdirSync } = require('fs')
+let { updater } = require('@architect/utils')
+let tmp = resolve(__dirname, '..', 'tmp')
 
-test('integration test setup', async t => {
-  t.plan(1)
-  fs.emptyDirSync(tmp)
-  process.chdir(tmp)
-  t.pass('integration test environment setup complete')
-})
+// Helper to empty a directory (replaces fs-extra's emptyDirSync)
+function emptyDirSync (dir) {
+  if (existsSync(dir)) {
+    rmSync(dir, { recursive: true, force: true })
+  }
+  mkdirSync(dir, { recursive: true })
+}
 
-test('should build the basic templated node runtime project', async t => {
-  t.plan(2)
-  fs.emptyDirSync(tmp)
-  args('--no-install --runtime node.js')
-  await cli()
-  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'index.mjs')), 'src/http/get-index/index.mjs created')
-  t.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime node/), '"runtime node" present somewhere in manifest')
-})
+describe('CLI Integration Tests', () => {
+  before(() => {
+    // Ensure tmp directory exists
+    emptyDirSync(tmp)
+  })
 
-test('should build the basic templated deno runtime project', async t => {
-  t.plan(2)
-  fs.emptyDirSync(tmp)
-  args('--no-install --runtime deno')
-  await cli()
-  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'mod.ts')), 'src/http/get-index/mod.ts created')
-  t.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime deno/), '"runtime deno" present somewhere in manifest')
-})
+  beforeEach(() => {
+    // Clean tmp directory before each test
+    emptyDirSync(tmp)
+  })
 
-test('should build the basic templated python runtime project', async t => {
-  t.plan(2)
-  fs.emptyDirSync(tmp)
-  args('--no-install --runtime python')
-  await cli()
-  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'lambda.py')), 'src/http/get-index/lambda.py created')
-  t.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime python/), '"runtime python" present somewhere in manifest')
-})
+  it('should build the basic templated node runtime project', async () => {
+    let update = updater('Create')
+    await create({
+      folder: tmp,
+      install: false,
+      runtime: 'node.js',
+      update,
+    })
+    assert.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'index.mjs')), 'src/http/get-index/index.mjs created')
+    assert.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime node/), '"runtime node" present somewhere in manifest')
+  })
 
-test('should build the basic templated ruby runtime project', async t => {
-  t.plan(2)
-  fs.emptyDirSync(tmp)
-  args('--no-install --runtime ruby')
-  await cli()
-  t.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'lambda.rb')), 'src/http/get-index/lambda.rb created')
-  t.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime ruby/), '"runtime ruby" present somewhere in manifest')
-})
+  it('should build the basic templated deno runtime project', async () => {
+    let update = updater('Create')
+    await create({
+      folder: tmp,
+      install: false,
+      runtime: 'deno',
+      update,
+    })
+    assert.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'mod.ts')), 'src/http/get-index/mod.ts created')
+    assert.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime deno/), '"runtime deno" present somewhere in manifest')
+  })
 
-test('integration test teardown', t => {
-  t.plan(1)
-  process.argv = argv
-  process.chdir(origCwd)
-  t.pass('integration test environment setup removed')
+  it('should build the basic templated python runtime project', async () => {
+    let update = updater('Create')
+    await create({
+      folder: tmp,
+      install: false,
+      runtime: 'python',
+      update,
+    })
+    assert.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'lambda.py')), 'src/http/get-index/lambda.py created')
+    assert.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime python/), '"runtime python" present somewhere in manifest')
+  })
+
+  it('should build the basic templated ruby runtime project', async () => {
+    let update = updater('Create')
+    await create({
+      folder: tmp,
+      install: false,
+      runtime: 'ruby',
+      update,
+    })
+    assert.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'lambda.rb')), 'src/http/get-index/lambda.rb created')
+    assert.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime ruby/), '"runtime ruby" present somewhere in manifest')
+  })
 })
