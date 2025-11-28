@@ -29,6 +29,6 @@
   },
   "devDependencies": {
     "@architect/eslint-config": "~3.0.0",
-    "eslint": "~9.36.0"
+    "eslint": "~9.39.1"
   }
 }

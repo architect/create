@@ -40,14 +40,7 @@ jobs:
     - name: Install
       run: npm install
 
-    - name: Test (Node.js <= 16.x)
-      if: matrix.node-version <= '16.x'
-      run: npm run test:nolint
-      env:
-        CI: true
-
     - name: Test
-      if: matrix.node-version > '16.x'
       run: npm test
       env:
         CI: true
