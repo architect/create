@@ -14,8 +14,8 @@
     "test": "npm run lint && npm run test:integration && npm run coverage",
     "test:nolint": "npm run test:integration && npm run coverage",
     "test:unit": "node --test 'test/unit/**/*-test.js'",
-    "test:integration": "node --test 'test/integration/**/*-test.js'",
-    "coverage": "node --test --experimental-test-coverage 'test/unit/**/*-test.js' 'test/integration/**/*-test.js'",
+    "test:integration": "node --test test/integration/cli-test.js",
+    "coverage": "node --test --experimental-test-coverage 'test/unit/**/*-test.js' test/integration/cli-test.js",
     "lint": "eslint . --fix",
     "rc": "npm version prerelease --preid RC"
   },

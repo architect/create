@@ -26,44 +26,48 @@ describe('CLI Integration Tests', () => {
   })
 
   it('should build the basic templated node runtime project', async () => {
+    let update = updater('Create')
     await create({
       folder: tmp,
       install: false,
       runtime: 'node.js',
-      update: updater('Create'),
+      update,
     })
     assert.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'index.mjs')), 'src/http/get-index/index.mjs created')
     assert.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime node/), '"runtime node" present somewhere in manifest')
   })
 
   it('should build the basic templated deno runtime project', async () => {
+    let update = updater('Create')
     await create({
       folder: tmp,
       install: false,
       runtime: 'deno',
-      update: updater('Create'),
+      update,
     })
     assert.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'mod.ts')), 'src/http/get-index/mod.ts created')
     assert.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime deno/), '"runtime deno" present somewhere in manifest')
   })
 
   it('should build the basic templated python runtime project', async () => {
+    let update = updater('Create')
     await create({
       folder: tmp,
       install: false,
       runtime: 'python',
-      update: updater('Create'),
+      update,
     })
     assert.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'lambda.py')), 'src/http/get-index/lambda.py created')
     assert.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime python/), '"runtime python" present somewhere in manifest')
   })
 
   it('should build the basic templated ruby runtime project', async () => {
+    let update = updater('Create')
     await create({
       folder: tmp,
       install: false,
       runtime: 'ruby',
-      update: updater('Create'),
+      update,
     })
     assert.ok(existsSync(join(tmp, 'src', 'http', 'get-index', 'lambda.rb')), 'src/http/get-index/lambda.rb created')
     assert.ok(readFileSync(join(tmp, 'app.arc'), 'utf-8').match(/runtime ruby/), '"runtime ruby" present somewhere in manifest')
